@@ -1,0 +1,2230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Process X-Ray · Map a process, find what to automate</title>
+<meta name="description" content="Describe a work process, attach your SOPs and diagrams, or name a company to research. Get a swimlane process map, waste and wait-time analysis, and ranked ways to remove, simplify or automate each step.">
+<meta property="og:title" content="Process X-Ray">
+<meta property="og:description" content="Map how the work really flows. Find what to remove, simplify or automate.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#2B45C4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 34'%3E%3Crect x='1' y='1' width='32' height='32' rx='8' fill='%232B45C4'/%3E%3Crect x='7' y='6' width='7' height='4.5' rx='1.2' fill='white'/%3E%3Crect x='19' y='15' width='7' height='4.5' rx='1.2' fill='white'/%3E%3Crect x='11' y='24' width='7' height='4.5' rx='1.2' fill='white'/%3E%3Cpath d='M14 8.25h2.5v9h2.5M22.5 19.5v6.75H18' fill='none' stroke='white' stroke-width='1.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Geist:wght@400..600&family=Geist+Mono:wght@400..500&display=swap">
+<style>
+:root{
+  /* Layout: masthead → intake sheet → results board (summary strip, tabs; the map gets the stage with a details rail beside it) → footer */
+  --paper:#EDF0F3; --sheet:#FFFFFF; --sheet-2:#F6F8FA; --ink:#15202B; --ink-2:#46556A; --muted:#647283;
+  --rule:#D2DAE2; --rule-soft:#E3E8ED; --grid:#D9E0E7;
+  --accent:#2B45C4; --accent-ink:#1F3497; --accent-soft:#E2E7FA; --on-accent:#FFFFFF;
+  --va:#1B7650; --va-soft:#DCF0E5; --bva:#9A6904; --bva-soft:#F7EACB; --nva:#B8362E; --nva-soft:#F8DEDA;
+  --handoff:#7252B8; --edge:#8390A0; --hl:#D98200; --hl-soft:#FFF0D4;
+  --c-claude:#BF5A34; --c-flow:#2A69AD; --c-config:#227F80; --c-rpa:#8649AD; --c-int:#3A7A36; --c-elim:#B5333E; --c-simp:#5F6B7A; --c-self:#A87307;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Geist","Segoe UI",system-ui,-apple-system,sans-serif;
+  --f-mono:"Geist Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0D1318; --sheet:#141C23; --sheet-2:#19222A; --ink:#E3E9EF; --ink-2:#B1BDC9; --muted:#8C99A8;
+  --rule:#2A3642; --rule-soft:#212B35; --grid:#222D37;
+  --accent:#8C9DFF; --accent-ink:#B3BFFF; --accent-soft:#222B52; --on-accent:#0D1318;
+  --va:#4DC28D; --va-soft:#16342A; --bva:#E1B04B; --bva-soft:#382C12; --nva:#F07D73; --nva-soft:#40201D;
+  --handoff:#A98CEC; --edge:#6E7D8C; --hl:#FFB23F; --hl-soft:#3A2B10;
+  --c-claude:#E88B64; --c-flow:#6CA9EE; --c-config:#5EC3C3; --c-rpa:#C18BE9; --c-int:#7CC478; --c-elim:#EE7B83; --c-simp:#9BA7B4; --c-self:#E1B04B;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1318; --sheet:#141C23; --sheet-2:#19222A; --ink:#E3E9EF; --ink-2:#B1BDC9; --muted:#8C99A8;
+  --rule:#2A3642; --rule-soft:#212B35; --grid:#222D37;
+  --accent:#8C9DFF; --accent-ink:#B3BFFF; --accent-soft:#222B52; --on-accent:#0D1318;
+  --va:#4DC28D; --va-soft:#16342A; --bva:#E1B04B; --bva-soft:#382C12; --nva:#F07D73; --nva-soft:#40201D;
+  --handoff:#A98CEC; --edge:#6E7D8C; --hl:#FFB23F; --hl-soft:#3A2B10;
+  --c-claude:#E88B64; --c-flow:#6CA9EE; --c-config:#5EC3C3; --c-rpa:#C18BE9; --c-int:#7CC478; --c-elim:#EE7B83; --c-simp:#9BA7B4; --c-self:#E1B04B;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{color-scheme:light}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 14px/1.5 var(--f-body);-webkit-font-smoothing:antialiased;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+.wrap{max-width:1360px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);font-weight:650;letter-spacing:-.01em;text-wrap:balance;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.eyebrow{font:500 10.5px/1.2 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.kbd{font:500 10.5px var(--f-mono);border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 4px;color:var(--ink-2);background:var(--sheet)}
+
+/* masthead */
+.mast{border-bottom:1px solid var(--rule);background:var(--sheet)}
+.mast-in{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;padding-block:14px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.brand-name{font:700 20px/1 var(--f-display);letter-spacing:-.02em}
+.brand-sub{color:var(--muted);font-size:12.5px;margin-top:3px}
+.mast-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mast-actions .sel{width:auto;max-width:260px}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--rule);background:var(--sheet);border-radius:8px;padding:7px 12px;font-weight:500;font-size:13px;cursor:pointer;white-space:nowrap;transition:border-color .12s,background-color .12s}
+.btn:hover{border-color:var(--ink-2)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:disabled:hover{border-color:var(--rule)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.btn.primary:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.btn.primary:disabled:hover{background:var(--accent);border-color:var(--accent)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--ink-2)}
+.btn.ghost:hover{background:var(--sheet-2);border-color:var(--rule)}
+.btn.danger[data-armed]{border-color:var(--nva);color:var(--nva);background:var(--nva-soft)}
+.btn.sm{padding:4px 9px;font-size:12px}
+.btn.lg{padding:10px 16px;font-size:14px}
+select.sel,input.inp{border:1px solid var(--rule);background:var(--sheet);border-radius:8px;padding:7px 10px;font-size:13px;min-width:0;width:100%}
+input.inp:disabled{opacity:.6}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:var(--sheet);max-width:100%}
+.seg button{border:0;background:transparent;padding:6px 11px;font-size:12.5px;cursor:pointer;color:var(--ink-2)}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
+.seg button:focus-visible{outline-offset:-2px}
+
+/* intake */
+main{padding-block:22px 40px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--sheet);border:1px solid var(--rule);border-radius:var(--r)}
+.intake{padding:20px}
+.intake-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.intake-head h2{font-size:22px}
+.intake-head p{margin:4px 0 0;color:var(--ink-2);max-width:66ch}
+.intake .collapsed-only{display:none}
+.intake.collapsed .collapsed-only{display:revert}
+.intake.collapsed .expanded-only,.intake.collapsed .intake-grid{display:none}
+.intake.collapsed{padding-block:14px}
+.intake.collapsed .intake-head{margin:0;align-items:center}
+.intake.collapsed .intake-head h2{font-size:17px}
+.intake-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px}
+.modes{margin-bottom:12px}
+.modes button{padding:8px 14px;font-size:13px}
+.ta-tools{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
+.ta-tools .count{margin-left:auto;color:var(--muted);font-size:11.5px}
+.count.warn{color:var(--bva);font-weight:600}
+textarea#desc{width:100%;min-height:250px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:12px 14px;background:var(--sheet-2);line-height:1.55;font-size:13.5px}
+textarea#desc:focus,textarea.ta:focus{background:var(--sheet)}
+textarea.ta{width:100%;min-height:120px;resize:vertical;border:1px solid var(--rule);border-radius:8px;padding:10px 12px;background:var(--sheet-2);font-size:13.5px;line-height:1.5}
+.research-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.research-grid .full{grid-column:1/-1}
+.examples{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.files{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.drop{border:1.5px dashed var(--rule);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:var(--ink-2);font-size:12.5px;transition:border-color .12s,background-color .12s}
+.drop.over{border-color:var(--accent);background:var(--accent-soft)}
+.filebtn{position:relative;overflow:hidden}
+.filebtn input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.filebtn:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+.flist{display:flex;flex-direction:column;gap:6px;list-style:none;margin:0;padding:0}
+.fitem{display:flex;gap:10px;align-items:center;border:1px solid var(--rule);border-radius:8px;padding:6px;background:var(--sheet)}
+.fthumb{width:40px;height:40px;border-radius:6px;flex:none;display:grid;place-items:center;font:600 10px var(--f-mono);background:var(--sheet-2);border:1px solid var(--rule-soft);overflow:hidden;color:var(--ink-2)}
+.fthumb img{width:100%;height:100%;object-fit:cover}
+.fmeta{min-width:0;flex:1}
+.fname{font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fnote{font-size:11.5px;color:var(--muted)}
+.fnote.err{color:var(--nva)}
+.side{display:flex;flex-direction:column;gap:12px}
+.side-group{display:flex;flex-direction:column;gap:12px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label,.fld .lbl{font-size:12px;font-weight:600;color:var(--ink-2)}
+.note{font-size:12px;color:var(--muted);margin:0}
+.note.err{color:var(--nva)}
+.hint{font-size:11.5px;color:var(--muted);margin:0}
+
+/* progress */
+.progress{padding:16px 20px;display:flex;gap:14px 18px;align-items:center;flex-wrap:wrap;border-color:var(--accent)}
+.stages{display:flex;gap:6px 18px;flex-wrap:wrap;flex:1;min-width:0;list-style:none;margin:0;padding:0}
+.stages li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.stages li::before{content:"";flex:none;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--rule)}
+.stages li.active{color:var(--ink);font-weight:600}
+.stages li.active::before{border-color:var(--accent);background:var(--accent);animation:pulse 1.2s ease-in-out infinite}
+.stages li.done{color:var(--ink-2)}
+.stages li.done::before{background:var(--va);border-color:var(--va)}
+@keyframes pulse{50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.stages li.active::before{animation:none}}
+.live{font-size:12px;color:var(--muted);min-width:0;overflow-wrap:anywhere}
+
+/* results */
+.flag{display:flex;gap:8px 12px;align-items:center;flex-wrap:wrap;background:var(--hl-soft);border:1px solid color-mix(in srgb,var(--hl) 40%,transparent);color:var(--ink);border-radius:8px;padding:8px 8px 8px 14px;font-size:13px}
+.flag b{font-weight:600}
+.flag span{flex:1;min-width:200px}
+.summary{padding:20px;display:flex;flex-direction:column;gap:16px}
+.sum-top h2{font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;margin-top:4px}
+.sum-top p{margin:6px 0 0;color:var(--ink-2);max-width:80ch}
+.flowline{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;margin-top:10px}
+.flowline .pt{background:var(--sheet-2);border:1px solid var(--rule);border-radius:6px;padding:3px 9px;min-width:0}
+.flowline .arr{color:var(--muted)}
+.flowline .fl{display:inline-flex;gap:8px;align-items:center;min-width:0;max-width:100%}
+.tiles{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft);border-radius:8px;overflow:hidden}
+.tile{background:var(--sheet);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.tile .v{font:650 24px/1.15 var(--f-display);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.tile .v.bad{color:var(--nva)}
+.tile .s{font-size:11.5px;color:var(--muted);line-height:1.35}
+.refine{display:flex;gap:8px;align-items:center;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:14px}
+.refine input{flex:1;min-width:220px}
+.refine-status{flex-basis:100%;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.refine-status:empty{display:none}
+
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--rule);overflow-x:auto;overflow-y:hidden;scrollbar-width:thin}
+.tab{border:0;background:transparent;padding:10px 14px;font-weight:600;font-size:13.5px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.tab:hover{color:var(--ink-2)}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:focus-visible{outline-offset:-3px}
+.tab .ct{font:500 11px var(--f-mono);color:var(--muted);margin-left:5px}
+
+/* map */
+.toolbar{display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;padding:12px 0 8px}
+.legend{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);align-items:center;padding-bottom:12px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:14px;height:10px;border-radius:3px;border:1.25px solid;display:inline-block}
+.ln{width:20px;height:0;border-top:2px solid;display:inline-block}
+.zoom{margin-left:auto;display:flex;gap:4px;align-items:center}
+.zoom .pct{min-width:52px;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.hlchip{display:inline-flex;align-items:center;gap:6px;background:var(--hl-soft);border:1px solid var(--hl);border-radius:999px;padding:2px 3px 2px 10px;font-size:12px;max-width:100%}
+.hlchip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.stage{overflow:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);max-height:78vh;cursor:grab;overscroll-behavior:contain}
+.stage.panning{cursor:grabbing;user-select:none}
+.stage svg{display:block;-webkit-user-select:none;user-select:none}
+.stage-inner{display:flex;width:max-content}
+.stage .map-lanes{position:sticky;left:0;z-index:2;flex:none;box-shadow:1px 0 0 var(--rule)}
+.stage .map-main{flex:none}
+.rail{padding:18px;display:flex;flex-direction:column;gap:14px;max-height:78vh;overflow:auto;position:sticky;top:12px}
+.rail h3{font-size:18px}
+.rail .detail{color:var(--ink-2);margin:0}
+.rail-head{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.chips{display:flex;gap:5px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;border:1px solid var(--rule);border-radius:999px;padding:2px 8px;background:var(--sheet-2);color:var(--ink-2);white-space:nowrap;max-width:100%}
+button.chip{font:inherit;font-size:11.5px;cursor:pointer;text-align:left;overflow:hidden;text-overflow:ellipsis}
+.chip.VA{background:var(--va-soft);border-color:var(--va);color:var(--va)}
+.chip.BVA{background:var(--bva-soft);border-color:var(--bva);color:var(--bva)}
+.chip.NVA{background:var(--nva-soft);border-color:var(--nva);color:var(--nva)}
+.chip.link:hover{border-color:var(--ink-2);color:var(--ink)}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.kv div{background:var(--sheet-2);border-radius:8px;padding:8px 10px;min-width:0}
+.kv b{display:block;font:650 17px/1.2 var(--f-display);font-variant-numeric:tabular-nums}
+.bar{height:6px;border-radius:3px;background:var(--rule-soft);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.rail ul{margin:4px 0 0;padding-left:18px}
+.rail li{margin:2px 0}
+.sect{display:flex;flex-direction:column;gap:4px}
+.pains li::marker{color:var(--nva)}
+.insight{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--rule-soft);font-size:13px}
+.insight:first-child{border-top:0;padding-top:0}
+.insight .k{flex:none;width:80px}
+.oplink{display:flex;gap:8px;align-items:flex-start;padding:6px 0;cursor:pointer;background:none;border:0;text-align:left;width:100%;border-radius:6px}
+.oplink:hover .t{text-decoration:underline}
+.num{flex:none;display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;font:600 11px var(--f-mono);color:var(--sheet)}
+button.num{border:0;padding:0;cursor:pointer}
+.ai-out{border-top:1px solid var(--rule);padding-top:12px;font-size:13px}
+.prose h3,.prose h4,.prose h5{font-family:var(--f-display);margin:14px 0 4px;font-size:15px}
+.prose h3:first-child,.prose h4:first-child,.prose h5:first-child{margin-top:0}
+.prose p{margin:6px 0}
+.prose ul,.prose ol{margin:4px 0;padding-left:20px}
+.prose li{margin:2px 0}
+.prose code{font:12px var(--f-mono);background:var(--sheet-2);border:1px solid var(--rule-soft);border-radius:4px;padding:0 4px}
+.prose .code{position:relative;margin:8px 0}
+.prose .code .copy{position:absolute;top:6px;right:6px}
+.prose pre{background:var(--sheet-2);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;padding-right:70px;overflow-x:auto;white-space:pre-wrap;margin:0}
+.prose pre code{background:none;border:0;padding:0}
+.prose table{border-collapse:collapse;font-size:12.5px;margin:6px 0;display:block;overflow-x:auto}
+.prose th,.prose td{border:1px solid var(--rule);padding:4px 8px;text-align:left;vertical-align:top}
+.prose a{color:var(--accent-ink)}
+.thinking{color:var(--muted);font-style:italic}
+
+/* opportunities */
+.opp-grid{display:grid;grid-template-columns:380px minmax(0,1fr);gap:16px;align-items:start;padding-top:14px}
+.matrix-card{padding:16px;position:sticky;top:12px}
+.matrix-card svg{width:100%;height:auto;display:block}
+.mx .quad{fill:var(--sheet-2)} .mx .quad.qw{fill:var(--va-soft)}
+.mx .axis{stroke:var(--rule);stroke-width:1}
+.mx .ql{fill:var(--muted);font:500 9.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase}
+.mx .al{fill:var(--ink-2);font:600 11px var(--f-body)}
+.mx .tk{fill:var(--muted);font:500 10px var(--f-mono)}
+.mx .bub{cursor:pointer;stroke:var(--sheet);stroke-width:2;outline:none}
+.mx .bub:hover,.mx .bub:focus-visible{stroke:var(--ink)}
+.mx .bt{fill:var(--sheet);font:600 11px var(--f-mono);pointer-events:none}
+.filters{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.opp-list{display:flex;flex-direction:column;gap:10px}
+.opp{padding:16px 18px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:12px;outline:none}
+.opp.flash{box-shadow:0 0 0 2px var(--hl)}
+.opp-head{display:flex;gap:12px;align-items:flex-start}
+.opp-head .num{width:26px;height:26px;font-size:12px;margin-top:2px}
+.opp-head h3{font-size:17px}
+.opp-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.meters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:520px}
+.meter .lbl{font-size:11px;color:var(--muted);display:block}
+.pips{display:flex;gap:3px;margin-top:5px}
+.pips i{width:100%;max-width:22px;height:6px;border-radius:2px;background:var(--rule-soft)}
+.pips.imp i.on{background:var(--va)} .pips.eff i.on{background:var(--bva)}
+.meter b{font:650 16px var(--f-display);font-variant-numeric:tabular-nums}
+.opp p{margin:0;color:var(--ink-2)}
+.opp details summary{cursor:pointer;font-weight:600;font-size:13px;color:var(--accent-ink);width:max-content;max-width:100%}
+.dl{display:grid;grid-template-columns:130px minmax(0,1fr);gap:6px 14px;margin:10px 0 0;font-size:13px}
+.dl dt{color:var(--muted);font-size:12px}
+.dl dd{margin:0}
+.opp-actions{display:flex;gap:8px;flex-wrap:wrap}
+.opp-dyn{display:flex;flex-direction:column;gap:10px}
+.qw-tag{background:var(--va-soft);border-color:var(--va);color:var(--va)}
+.bb-tag{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-ink)}
+.cat-claude{--c:var(--c-claude)} .cat-flow{--c:var(--c-flow)} .cat-config{--c:var(--c-config)} .cat-rpa{--c:var(--c-rpa)}
+.cat-int{--c:var(--c-int)} .cat-elim{--c:var(--c-elim)} .cat-simp{--c:var(--c-simp)} .cat-self{--c:var(--c-self)}
+.num[class*="cat-"]{background:var(--c)}
+.mx .bub{fill:var(--c)}
+.chip.cat{color:var(--c);border-color:var(--c);background:transparent;font-weight:600}
+
+/* steps table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:var(--r);background:var(--sheet);margin-top:14px}
+table.steps{border-collapse:collapse;width:100%;font-size:13px;min-width:960px}
+.steps th{font:500 10.5px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);background:var(--sheet-2)}
+.steps td{padding:9px 12px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+.steps tr:last-child td{border-bottom:0}
+.steps tr.row{cursor:pointer;outline:none}
+.steps tr.row:hover td,.steps tr.row:focus-visible td{background:var(--sheet-2)}
+.steps tr.row:focus-visible td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.steps td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.steps .nm{font-weight:600}
+.steps .sub{color:var(--muted);font-size:12px}
+.steps ul{margin:0;padding-left:16px;color:var(--ink-2);font-size:12.5px}
+.autobar{display:flex;align-items:center;gap:6px}
+.autobar .bar{width:56px;margin:0}
+
+/* questions */
+.q-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;padding-top:14px;align-items:start}
+.q-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.q-card h3{font-size:17px}
+.q{display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:1px solid var(--rule-soft)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q label{font-weight:500}
+.q textarea{border:1px solid var(--rule);border-radius:8px;padding:8px 10px;background:var(--sheet-2);min-height:40px;resize:vertical;font-size:13px}
+.assume li{margin:4px 0;color:var(--ink-2)}
+
+/* sources */
+.src-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;padding-top:14px;align-items:start}
+.src-grid.single{grid-template-columns:minmax(0,720px)}
+.src-col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.src-card{padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.src-card h3{font-size:17px}
+.srclist{list-style:none;margin:0;padding:0}
+.src{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--rule-soft)}
+.src:first-child{border-top:0;padding-top:0}
+.src .n{flex:none;font:600 12px var(--f-mono);color:var(--muted);width:28px}
+.src a,.ext{color:var(--accent-ink);font-weight:600;text-decoration:none;overflow-wrap:anywhere}
+.src a:hover,.ext:hover{text-decoration:underline}
+.src .dom{font:500 11.5px var(--f-mono);color:var(--muted);overflow-wrap:anywhere}
+.cite{font:600 10.5px var(--f-mono);color:var(--accent-ink);text-decoration:none;margin-left:2px}
+.cite:hover{text-decoration:underline}
+.findings{margin:0;padding-left:18px}
+.findings li{margin:5px 0}
+.notice{background:var(--bva-soft);border:1px solid var(--bva);border-radius:8px;padding:8px 12px;font-size:12.5px}
+
+.exports{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-top:4px}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.foot{display:flex;gap:12px 24px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;border-top:1px solid var(--rule);padding-top:18px;margin-top:6px;color:var(--muted);font-size:12px}
+.foot p{margin:0;max-width:92ch}
+
+.overlay{position:fixed;inset:0;background:color-mix(in srgb,var(--ink) 40%,transparent);display:grid;place-items:center;padding:16px;z-index:20}
+.overlay .card{width:min(720px,100%);padding:18px;display:flex;flex-direction:column;gap:10px}
+.overlay textarea{width:100%;min-height:300px;font:12px/1.5 var(--f-mono);border:1px solid var(--rule);border-radius:8px;padding:10px;background:var(--sheet-2)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--sheet);padding:9px 16px;border-radius:8px;font-size:13px;z-index:30;max-width:calc(100% - 32px);box-shadow:0 6px 20px color-mix(in srgb,var(--ink) 25%,transparent)}
+
+/* svg map */
+.map .lane-a{fill:var(--sheet)} .map .lane-b{fill:var(--sheet-2)}
+.map .lane-band{fill:var(--sheet-2)} .map .lane-band.b{fill:var(--rule-soft)}
+.map .lane-rule{stroke:var(--rule);stroke-width:1}
+.map .lane-name{fill:var(--ink);font:600 12.5px var(--f-body)}
+.map .lane-kind{fill:var(--muted);font:500 9.5px var(--f-mono);letter-spacing:.08em}
+.map .dot{fill:var(--grid)}
+.map .edge{fill:none;stroke:var(--edge);stroke-width:1.5}
+.map .edge.handoff{stroke:var(--handoff)}
+.map .edge.rework{stroke:var(--nva);stroke-dasharray:5 4}
+.map .ah-flow{fill:var(--edge)} .map .ah-handoff{fill:var(--handoff)} .map .ah-rework{fill:var(--nva)}
+.map .el-bg{fill:var(--sheet);opacity:.92}
+.map .el{fill:var(--ink-2);font:500 10.5px var(--f-body)}
+.map .node{cursor:pointer;outline:none}
+.map .node .shape{fill:var(--sheet);stroke:var(--ink-2);stroke-width:1.25;transition:stroke-width .1s}
+.map.mode-value .v-VA .shape{fill:var(--va-soft);stroke:var(--va)}
+.map.mode-value .v-BVA .shape{fill:var(--bva-soft);stroke:var(--bva)}
+.map.mode-value .v-NVA .shape{fill:var(--nva-soft);stroke:var(--nva)}
+.map .node.term .shape{fill:var(--ink)!important;stroke:var(--ink)!important}
+.map .node.term .nm{fill:var(--sheet)}
+.map .node.b-inferred .shape{stroke-dasharray:4 3}
+.map .node.b-industry .shape{stroke-dasharray:1.5 3;stroke-linecap:round}
+.map .node .inner{fill:none;stroke:var(--ink-2);stroke-width:1;opacity:.55}
+.map .node .nm{fill:var(--ink);font:600 12px var(--f-body)}
+.map .node .meta{fill:var(--ink-2);font:500 10px var(--f-mono)}
+.map .node:hover .shape{stroke-width:2}
+.map .node:focus-visible .shape{stroke:var(--accent)!important;stroke-width:3}
+.map .node.sel .shape{stroke:var(--accent)!important;stroke-width:2.75}
+.map .node.hl .shape{stroke:var(--hl)!important;stroke-width:2.75}
+.map .dim{opacity:.2}
+.map .q-tri{fill:var(--bva)} .map .q-tri.long{fill:var(--nva)}
+.map .q-txt{fill:var(--ink-2);font:600 10px var(--f-mono)}
+.map .pain-bg{fill:var(--nva);stroke:var(--sheet);stroke-width:1.5}
+.map .pain-txt{fill:var(--sheet);font:700 10px var(--f-mono)}
+.map .pain-n{fill:var(--nva);font:700 10px var(--f-mono);paint-order:stroke;stroke:var(--sheet);stroke-width:3px}
+.map .ob{fill:var(--c);stroke:var(--sheet);stroke-width:1.5}
+.map .ob-t{fill:var(--sheet);font:700 9.5px var(--f-mono)}
+
+@media (max-width:1180px){ .tiles{grid-template-columns:repeat(4,minmax(0,1fr))} }
+@media (max-width:1100px){
+  .map-grid{grid-template-columns:minmax(0,1fr)}
+  .rail{max-height:none;position:static}
+  .opp-grid{grid-template-columns:minmax(0,1fr)}
+  .matrix-card{position:static;max-width:520px}
+}
+@media (max-width:820px){
+  .intake-grid,.q-grid,.src-grid,.research-grid{grid-template-columns:minmax(0,1fr)}
+  .stage{max-height:none}
+  .zoom{margin-left:0}
+  .dl{grid-template-columns:minmax(0,1fr)}
+  .dl dt{margin-top:6px}
+  .brand-sub{display:none}
+}
+@media (max-width:620px){
+  .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .intake,.summary{padding:16px}
+  .mast-actions{width:100%}
+  .mast-actions .sel{flex:1;max-width:none}
+  .kv{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .flowline .arr{display:none}
+  .flowline .fl{width:100%}
+  .flowline .fl .eyebrow{flex:none;width:62px}
+}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <div class="brand">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="1" y="1" width="32" height="32" rx="8" style="fill:var(--accent)"/>
+        <path d="M5 12.5h24M5 21.5h24" style="stroke:var(--on-accent)" stroke-opacity=".35" stroke-width="1"/>
+        <rect x="7" y="6" width="7" height="4.5" rx="1.2" style="fill:var(--on-accent)"/>
+        <rect x="19" y="15" width="7" height="4.5" rx="1.2" style="fill:var(--on-accent)"/>
+        <rect x="11" y="24" width="7" height="4.5" rx="1.2" style="fill:var(--on-accent)"/>
+        <path d="M14 8.25h2.5v9h2.5M22.5 19.5v6.75H18" fill="none" style="stroke:var(--on-accent)" stroke-width="1.4"/>
+      </svg>
+      <div style="min-width:0">
+        <h1 class="brand-name">Process X-Ray</h1>
+        <div class="brand-sub">Map how the work really flows. Find what to remove, simplify or automate.</div>
+      </div>
+    </div>
+    <div class="mast-actions">
+      <select id="recent" class="sel" aria-label="Open a saved map"></select>
+      <button class="btn ghost danger" id="btn-del" type="button" hidden>Delete map</button>
+      <button class="btn" id="btn-new" type="button">New map</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card intake" id="intake" aria-labelledby="intake-title">
+    <div class="intake-head">
+      <div style="min-width:0">
+        <h2 id="intake-title">Describe the process</h2>
+        <p class="expanded-only">Explain how the work gets done and attach what you have: SOPs, PDFs, Word docs, photos of whiteboards. Or name a company and a process, and Claude researches the public record and maps it for you.</p>
+        <p class="collapsed-only note" id="intake-sum"></p>
+      </div>
+      <button class="btn collapsed-only" id="btn-expand" type="button">Edit input</button>
+    </div>
+    <div class="intake-grid">
+      <div style="min-width:0">
+        <div class="seg modes" role="group" aria-label="How to start" id="mode">
+          <button type="button" data-v="describe" aria-pressed="true">Describe it</button>
+          <button type="button" data-v="research" aria-pressed="false">Research a company</button>
+        </div>
+        <div id="pane-describe">
+          <div class="ta-tools">
+            <button class="btn sm" id="btn-outline" type="button">Insert outline</button>
+            <button class="btn sm" id="btn-example-text" type="button">Use example text</button>
+            <span class="count mono" id="charcount" aria-live="polite"></span>
+          </div>
+          <textarea id="desc" aria-label="Process description" placeholder="Example: When a new customer signs, sales emails ops the contract. Ops creates the account in Salesforce, then asks finance to set up billing in QuickBooks. Finance waits for the PO number, which usually takes a few days…"></textarea>
+        </div>
+        <div id="pane-research" hidden>
+          <div class="research-grid">
+            <div class="fld"><label for="r-company">Company</label><input class="inp" id="r-company" autocomplete="off" placeholder="e.g. Stripe"></div>
+            <div class="fld"><label for="r-process">Process</label><input class="inp" id="r-process" autocomplete="off" placeholder="e.g. merchant onboarding and KYC review"></div>
+            <div class="fld full"><label for="r-notes">What you already know (optional)</label><textarea class="ta" id="r-notes" placeholder="Anything you've heard or seen: teams involved, tools, where it gets stuck. These notes help Claude interpret the sources and are never used as search terms."></textarea></div>
+          </div>
+          <div class="examples" aria-label="Example research requests">
+            <span class="eyebrow">Try</span>
+            <button type="button" class="chip link" data-example data-co="Stripe" data-pr="merchant onboarding and KYC review">Stripe · merchant onboarding</button>
+            <button type="button" class="chip link" data-example data-co="Uber" data-pr="driver onboarding">Uber · driver onboarding</button>
+            <button type="button" class="chip link" data-example data-co="Shopify" data-pr="order refunds">Shopify · order refunds</button>
+          </div>
+          <p class="note" style="margin-top:10px">Claude searches the web, reads help centers, job postings, filings, case studies and reviews, then maps the process and cites what it found. Steps the sources don't cover are filled from industry practice and marked on the map.</p>
+        </div>
+        <div class="files">
+          <div class="drop" id="drop">
+            <span class="btn sm filebtn">Add files<input type="file" id="file" multiple accept=".pdf,.docx,.png,.jpg,.jpeg,.webp,.gif,.txt,.md,.csv,.tsv,.json,.html,.htm,.vtt,.srt,.eml,.bpmn,.drawio,.xml" aria-label="Add files"></span>
+            <span>PDF, Word, images of diagrams or whiteboards, transcripts or text files. Drop or paste them here.</span>
+          </div>
+          <ul class="flist" id="flist" aria-label="Attached files"></ul>
+        </div>
+      </div>
+      <div class="side">
+        <div class="side-group" id="ctx-describe">
+          <div class="fld"><label for="ctx-team">Team or industry</label><input class="inp" id="ctx-team" placeholder="e.g. Finance ops, 400-person distributor"></div>
+          <div class="fld"><label for="ctx-volume">Volume</label><input class="inp" id="ctx-volume" placeholder="e.g. 1,200 invoices a month"></div>
+          <div class="fld"><label for="ctx-tools">Tools in use</label><input class="inp" id="ctx-tools" placeholder="e.g. NetSuite, Outlook, Slack, Google Drive"></div>
+        </div>
+        <div class="fld"><label for="ctx-goal">Main goal</label>
+          <select class="sel" id="ctx-goal">
+            <option>Save team hours</option><option>Shorten cycle time</option><option>Reduce errors and rework</option><option>Better customer or employee experience</option><option>Stronger controls and compliance</option><option>Scale without hiring</option>
+          </select>
+        </div>
+        <div class="fld"><span class="lbl" id="depth-lbl">Depth</span>
+          <div class="seg" role="group" aria-labelledby="depth-lbl" id="depth">
+            <button type="button" data-v="default" aria-pressed="true">Standard</button>
+            <button type="button" data-v="complex" aria-pressed="false">Deep (slower)</button>
+          </div>
+        </div>
+        <div class="fld" id="code-fld" hidden><label for="access-code">Access code</label><input class="inp" id="access-code" autocomplete="off" spellcheck="false" placeholder="Enter the code you were given"></div>
+        <button class="btn primary lg" id="btn-analyze" type="button">Map this process</button>
+        <div class="note" id="analyze-note" aria-live="polite">A typical analysis takes 30 to 90 seconds.</div>
+        <p class="hint"><span class="kbd" id="kbd-mod">Ctrl</span> + <span class="kbd">Enter</span> also starts it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card progress" id="progress" hidden aria-label="Progress">
+    <ol class="stages" id="stages"></ol>
+    <span class="live mono" id="live"></span>
+    <button class="btn" id="btn-stop" type="button">Stop</button>
+  </section>
+
+  <section id="results" style="display:flex;flex-direction:column;gap:14px" aria-label="Analysis">
+    <div class="flag" id="example-flag"><b>Example</b><span>This is a sample analysis of vendor invoice processing. Describe your own process or research a company to replace it.</span><button class="btn sm" id="btn-start-own" type="button">Start your own</button></div>
+    <div class="card summary" id="summary"></div>
+    <div>
+      <div class="tabs" role="tablist" aria-label="Analysis views" id="tablist">
+        <button class="tab" role="tab" id="tab-map" data-tab="map" aria-controls="panel-map" aria-selected="true">Process map</button>
+        <button class="tab" role="tab" id="tab-opportunities" data-tab="opportunities" aria-controls="panel-opportunities" aria-selected="false" tabindex="-1">Opportunities<span class="ct" id="ct-opps"></span></button>
+        <button class="tab" role="tab" id="tab-steps" data-tab="steps" aria-controls="panel-steps" aria-selected="false" tabindex="-1">Step inventory<span class="ct" id="ct-steps"></span></button>
+        <button class="tab" role="tab" id="tab-questions" data-tab="questions" aria-controls="panel-questions" aria-selected="false" tabindex="-1">Open questions<span class="ct" id="ct-qs"></span></button>
+        <button class="tab" role="tab" id="tab-sources" data-tab="sources" aria-controls="panel-sources" aria-selected="false" tabindex="-1" hidden>Sources<span class="ct" id="ct-src"></span></button>
+      </div>
+      <div class="panel" id="panel-map" role="tabpanel" aria-labelledby="tab-map">
+        <div class="toolbar">
+          <div class="seg" role="group" aria-label="Color steps by" id="colorby">
+            <button type="button" data-v="value" aria-pressed="true">Value</button>
+            <button type="button" data-v="auto" aria-pressed="false">Automation</button>
+            <button type="button" data-v="plain" aria-pressed="false">Plain</button>
+          </div>
+          <span id="hl-slot"></span>
+          <div class="zoom" role="group" aria-label="Zoom">
+            <button class="btn sm" type="button" id="z-out" aria-label="Zoom out">−</button>
+            <button class="btn sm ghost pct" type="button" id="z-val" title="Reset to 100%">100%</button>
+            <button class="btn sm" type="button" id="z-in" aria-label="Zoom in">+</button>
+            <button class="btn sm" type="button" id="z-fit">Fit</button>
+          </div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="map-grid">
+          <div class="stage" id="stage" title="Drag to move around. Ctrl + scroll to zoom."></div>
+          <aside class="card rail" id="rail" aria-label="Details"></aside>
+        </div>
+      </div>
+      <div class="panel" id="panel-opportunities" role="tabpanel" aria-labelledby="tab-opportunities" hidden></div>
+      <div class="panel" id="panel-steps" role="tabpanel" aria-labelledby="tab-steps" hidden></div>
+      <div class="panel" id="panel-questions" role="tabpanel" aria-labelledby="tab-questions" hidden></div>
+      <div class="panel" id="panel-sources" role="tabpanel" aria-labelledby="tab-sources" hidden></div>
+    </div>
+    <div class="exports" id="exports">
+      <span class="eyebrow">Export</span>
+      <button class="btn sm" type="button" id="x-md">Report (.md)</button>
+      <button class="btn sm" type="button" id="x-json">Data (.json)</button>
+      <button class="btn sm" type="button" id="x-mermaid">Copy as Mermaid</button>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Process X-Ray uses Anthropic's Claude to build each analysis. Your text, files and research requests are sent to our server and to Claude only when you run an analysis, and saved maps stay in this browser. Times, volumes and savings are estimates: check them with the people who do the work before acting on them.</p>
+    <button class="btn ghost sm danger" id="btn-clear" type="button">Clear saved maps</button>
+  </footer>
+</main>
+
+<div class="overlay" id="overlay" hidden>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="ov-title">
+    <h3 id="ov-title" style="font-size:17px">Mermaid flowchart</h3>
+    <p class="note">Copy this into any Mermaid editor, Notion, GitHub or Confluence.</p>
+    <textarea id="ov-text" readonly aria-label="Mermaid source"></textarea>
+    <div style="display:flex;justify-content:flex-end"><button class="btn" id="ov-close" type="button">Close</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="sr-only" id="sr-status" aria-live="polite"></div>
+
+<script>
+/* ---------- helpers ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const arr = x => Array.isArray(x) ? x : [];
+const str = x => typeof x === "string" ? x.trim() : (x == null ? "" : String(x));
+const num = (x, d = 0) => { const n = Number(x); return Number.isFinite(n) ? n : d; };
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function fmtMin(m) {
+  m = num(m);
+  if (m <= 0) return "0m";
+  if (m < 60) return Math.max(1, Math.round(m)) + "m";
+  if (m < 1440) { const h = m / 60; return (h < 10 ? +h.toFixed(1) : Math.round(h)) + "h"; }
+  const d = m / 1440; return (d < 10 ? +d.toFixed(1) : Math.round(d)) + "d";
+}
+const fmtWait = m => num(m) > 0 ? fmtMin(m) : "None";
+const fmtInt = n => Math.round(n).toLocaleString("en-US");
+const plural = (n, w) => `${fmtInt(n)} ${w}${n === 1 ? "" : "s"}`;
+const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const behavior = () => reduceMotion() ? "auto" : "smooth";
+function toast(msg, ms = 3400) {
+  const t = $("#toast"); t.textContent = msg; t.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { t.hidden = true; }, ms);
+}
+function srSay(msg) { const s = $("#sr-status"); s.textContent = ""; setTimeout(() => { s.textContent = msg; }, 40); }
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch {} }
+};
+const session = {
+  get(k) { try { return sessionStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { sessionStorage.setItem(k, v); } catch {} }
+};
+const enc = new TextEncoder();
+const bytes = s => enc.encode(s).length;
+function selectContents(el) { const r = document.createRange(); r.selectNodeContents(el); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+function copyText(text) { return navigator.clipboard?.writeText ? navigator.clipboard.writeText(text).then(() => true, () => false) : Promise.resolve(false); }
+// Two clicks within four seconds confirm a destructive action (the viewer never shows confirm()).
+function armable(btn, label, run) {
+  btn.addEventListener("click", () => {
+    if (btn.dataset.armed) { clearTimeout(btn._t); delete btn.dataset.armed; btn.textContent = label; run(); return; }
+    btn.dataset.armed = "1"; btn.textContent = "Click again to confirm";
+    btn._t = setTimeout(() => { delete btn.dataset.armed; btn.textContent = label; }, 4000);
+  });
+}
+
+const CATS = {
+  "Claude": "claude", "Workflow automation": "flow", "System configuration": "config", "RPA": "rpa",
+  "Integration": "int", "Eliminate": "elim", "Simplify": "simp", "Self-service": "self"
+};
+const catCls = c => "cat-" + (CATS[c] || "simp");
+const VALUE_NAME = { VA: "Value-adding", BVA: "Business-required", NVA: "Waste" };
+const TYPE_NAME = { start: "Start", end: "End", task: "Task", decision: "Decision", wait: "Wait / queue", automated: "Automated" };
+
+/* ---------- example data ---------- */
+const EXAMPLE_TEXT = `Accounts payable at a 400-person distribution company. We process about 1,200 vendor invoices a month.
+
+Vendors email invoices (mostly PDF, some scans) to our shared ap@ inbox in Outlook. One of our three AP clerks goes through the inbox in the morning, downloads each invoice, renames it and saves it to the AP folder in Google Drive. The inbox also gets statements and lots of "when will I be paid" emails, so things get missed and vendors sometimes send the same invoice twice.
+
+The clerk then types the invoice into NetSuite as a vendor bill, header and every line. If there's a PO number, they pull up the PO and the goods receipt and compare quantities and prices in a spreadsheet. If it's within 2% or $50 it goes into the payment queue. If not, they email the buyer and the vendor to sort it out, which can take a day or more, then re-check.
+
+About a quarter of invoices have no PO. For those the clerk looks up the budget owner in an old Excel list and forwards the PDF asking for approval. Owners reply "approved" by email, often after a couple of reminders. Sometimes they have questions and the clerk has to go back to the vendor.
+
+Every Thursday our Controller reviews all approved bills in NetSuite one by one and releases the weekly ACH payment run. Biggest complaints: typing, chasing approvals, and vendors calling about late payments.`;
+
+const EXAMPLE = {
+  process: { name: "Vendor invoice processing", summary: "Accounts payable receives vendor invoices by email, keys them into NetSuite, matches PO invoices against receipts, routes non-PO invoices to budget owners for email approval, and pays approved bills in a weekly ACH run reviewed by the Controller.", trigger: "Vendor emails an invoice to ap@", outcome: "Vendor paid and bill closed in NetSuite", owner: "AP Manager", runsPerMonth: 1200, runsPerMonthBasis: "stated" },
+  lanes: [
+    { id: "l1", name: "Vendor", kind: "external" },
+    { id: "l2", name: "AP clerk", kind: "person" },
+    { id: "l3", name: "Budget owner", kind: "person" },
+    { id: "l4", name: "Controller", kind: "person" },
+    { id: "l5", name: "NetSuite", kind: "system" }
+  ],
+  steps: [
+    { id: "s1", lane: "l1", name: "Vendor emails invoice", type: "start", detail: "Vendors send PDF invoices to the ap@ shared inbox; about 15% are scans.", touchMin: 0, waitMin: 0, value: "BVA", automation: 20, tools: ["Email"], inputs: [], outputs: ["Invoice email"], pains: ["Invoices arrive in several formats", "Many invoices lack a PO number"], next: [{ to: "s2", label: "" }] },
+    { id: "s2", lane: "l2", name: "Pull invoice from inbox", type: "task", detail: "Clerk opens the shared inbox, downloads the PDF, renames it by vendor and date and saves it to the AP Drive folder.", touchMin: 4, waitMin: 480, value: "NVA", automation: 90, tools: ["Outlook shared inbox", "Google Drive"], inputs: ["Invoice email"], outputs: ["Filed PDF"], pains: ["Inbox mixes invoices with statements and payment questions", "Duplicate invoices slip through when vendors resend"], next: [{ to: "s3", label: "" }] },
+    { id: "s3", lane: "l2", name: "Key invoice into NetSuite", type: "task", detail: "Clerk types the header and every line item into a NetSuite vendor bill.", touchMin: 9, waitMin: 0, value: "BVA", automation: 85, tools: ["NetSuite"], inputs: ["Filed PDF"], outputs: ["Draft vendor bill"], pains: ["Keying errors found later in matching", "Multi-page invoices take 20+ minutes"], next: [{ to: "s4", label: "" }] },
+    { id: "s4", lane: "l2", name: "PO on invoice?", type: "decision", detail: "Clerk checks whether the invoice references a purchase order.", touchMin: 1, waitMin: 0, value: "BVA", automation: 95, tools: ["NetSuite"], inputs: ["Draft vendor bill"], outputs: [], pains: [], next: [{ to: "s5", label: "Yes (~75%)" }, { to: "s7", label: "No" }] },
+    { id: "s5", lane: "l2", name: "Match PO, receipt, invoice", type: "task", detail: "Clerk compares invoice lines to the PO and the goods receipt in a spreadsheet, line by line.", touchMin: 6, waitMin: 0, value: "BVA", automation: 80, tools: ["NetSuite", "Excel"], inputs: ["PO", "Goods receipt", "Draft bill"], outputs: ["Match result"], pains: ["Receipts are often not entered yet", "Matching is done by eye"], next: [{ to: "s6", label: "" }] },
+    { id: "s7", lane: "l2", name: "Find and email budget owner", type: "task", detail: "For non-PO invoices the clerk looks up the cost center owner in an old Excel list and forwards the PDF asking for approval.", touchMin: 5, waitMin: 0, value: "NVA", automation: 90, tools: ["Excel owner list", "Outlook"], inputs: ["Filed PDF"], outputs: ["Approval request email"], pains: ["Owner list is out of date", "Clerk guesses the cost center on vague invoices"], next: [{ to: "s8", label: "" }] },
+    { id: "s6", lane: "l2", name: "Within tolerance?", type: "decision", detail: "Price and quantity must match within 2% or $50.", touchMin: 1, waitMin: 0, value: "BVA", automation: 95, tools: ["Excel"], inputs: ["Match result"], outputs: [], pains: [], next: [{ to: "s10", label: "Yes" }, { to: "s12", label: "No (~12%)" }] },
+    { id: "s8", lane: "l3", name: "Approve by email reply", type: "task", detail: "Budget owner opens the email, checks the charge against budget and replies \"approved\".", touchMin: 4, waitMin: 2880, value: "BVA", automation: 40, tools: ["Outlook"], inputs: ["Approval request email"], outputs: ["Approval reply"], pains: ["Requests sit 2+ days in busy inboxes", "Clerk sends about two reminders per request", "No audit trail beyond the email reply"], next: [{ to: "s9", label: "" }] },
+    { id: "s12", lane: "l2", name: "Investigate mismatch", type: "task", detail: "Clerk emails the buyer and the vendor to resolve price or quantity differences, then corrects the bill.", touchMin: 25, waitMin: 1440, value: "NVA", automation: 60, tools: ["Outlook", "NetSuite"], inputs: ["Match result"], outputs: ["Corrected bill"], pains: ["Long email threads", "No standard reason codes"], next: [{ to: "s5", label: "Re-match" }] },
+    { id: "s9", lane: "l3", name: "Approved?", type: "decision", detail: "Owner approves, or comes back with a question.", touchMin: 1, waitMin: 0, value: "BVA", automation: 60, tools: [], inputs: ["Approval reply"], outputs: [], pains: [], next: [{ to: "s10", label: "Yes" }, { to: "s13", label: "Question" }] },
+    { id: "s10", lane: "l4", name: "Review weekly payment batch", type: "task", detail: "Every Thursday the Controller reviews each approved bill before releasing the batch.", touchMin: 3, waitMin: 3360, value: "BVA", automation: 70, tools: ["NetSuite"], inputs: ["Approved bills"], outputs: ["Released batch"], pains: ["Weekly cycle adds up to 7 days", "Low-risk bills reviewed one by one"], next: [{ to: "s11", label: "" }] },
+    { id: "s13", lane: "l2", name: "Chase clarification", type: "task", detail: "Clerk gets the approver's question answered by the vendor or requester and resends for approval.", touchMin: 15, waitMin: 1440, value: "NVA", automation: 55, tools: ["Outlook"], inputs: ["Approver question"], outputs: ["Answer"], pains: ["Clerk relays questions they cannot answer"], next: [{ to: "s8", label: "Resubmit" }] },
+    { id: "s11", lane: "l5", name: "Run ACH payment batch", type: "automated", detail: "NetSuite generates the ACH file and sends remittance emails.", touchMin: 1, waitMin: 0, value: "VA", automation: 100, tools: ["NetSuite"], inputs: ["Released batch"], outputs: ["ACH file", "Remittance email"], pains: [], next: [{ to: "s14", label: "" }] },
+    { id: "s14", lane: "l1", name: "Vendor receives payment", type: "end", detail: "Funds and remittance arrive; the bill closes.", touchMin: 0, waitMin: 0, value: "VA", automation: 0, tools: [], inputs: [], outputs: [], pains: [], next: [] }
+  ],
+  opportunities: [
+    { id: "o1", title: "Claude reads and keys invoices at intake", category: "Claude", steps: ["s2", "s3", "s4"], summary: "An intake flow sends every invoice to Claude, which extracts header and lines, checks for duplicates and creates a draft vendor bill for the clerk to confirm.", how: "A Power Automate flow fires on each new email to ap@ and sends the attachment to the Claude API with an extraction prompt and NetSuite's field list. Claude returns JSON (vendor, invoice number, dates, PO, lines, totals) with a confidence flag per field. The flow checks the invoice number against open bills, then creates a draft bill through the NetSuite REST API. Clerks review only low-confidence fields in a queue.", tools: ["Claude API (PDF input)", "Power Automate or Zapier", "NetSuite REST API"], alternatives: "Packaged invoice capture (NetSuite Bill Capture, Stampli, Rossum) needs less build but charges per invoice and handles odd formats less well.", humanInLoop: "Clerk confirms flagged fields and every bill over $10k before it posts.", impact: 5, effort: 3, hoursPerMonth: 210, cycleTimeEffect: "Removes the ~8h inbox wait; bills are drafted minutes after arrival.", risks: "Extraction errors on poor scans. Keep a confidence threshold and audit 5% weekly.", firstStep: "Run 50 past invoices through Claude in a Project with the extraction prompt and compare with what was keyed." },
+    { id: "o2", title: "Turn on automated 3-way match", category: "System configuration", steps: ["s5", "s6"], summary: "Let NetSuite match PO, receipt and bill with the 2% / $50 tolerance so clerks see only exceptions.", how: "Enable NetSuite's matching and tolerance rules per vendor class. Matching bills move to payment automatically; mismatches land in an exception queue with the failing lines highlighted. Needs the warehouse to enter receipts the same day.", tools: ["NetSuite matching and tolerance rules", "Saved search exception queue"], alternatives: "If the feature isn't licensed, a scheduled script built with Claude Code can compare lines and tag bills.", humanInLoop: "Clerk works the exception queue only.", impact: 4, effort: 2, hoursPerMonth: 90, cycleTimeEffect: "Matched bills skip a manual step entirely.", risks: "Late receipts create false exceptions; fix receiving discipline first.", firstStep: "Check the NetSuite license and pull last quarter's match failure reasons." },
+    { id: "o3", title: "Route non-PO approvals in the ERP", category: "Workflow automation", steps: ["s7", "s8", "s9"], summary: "Replace email approvals with a workflow that knows each cost center's owner, sends reminders and keeps an audit trail.", how: "Move the owner list into NetSuite. When a non-PO bill is created, the workflow assigns the approver from the cost center, notifies them in Slack or Teams with approve and reject buttons, escalates after 24 hours and records the decision on the bill.", tools: ["NetSuite SuiteFlow approvals", "Slack or Teams approvals"], alternatives: "Power Automate Approvals if ERP workflows are hard to configure.", humanInLoop: "Budget owner still approves; clerk handles escalations.", impact: 4, effort: 2, hoursPerMonth: 30, cycleTimeEffect: "Approval wait drops from ~2 days to same day for most bills.", risks: "Stale ownership data. Name an owner for the owner list.", firstStep: "Clean up the cost center owner list with Finance and agree the escalation rule." },
+    { id: "o4", title: "Pay twice a week, review by exception", category: "Simplify", steps: ["s10"], summary: "Run payments Tuesday and Friday, and have the Controller review only large or unusual bills.", how: "Bills under $5k from known vendors release automatically; the Controller reviews a short exception list (new vendors, changed bank details, amount spikes) and the batch total.", tools: ["NetSuite payment batches", "Saved search exception list"], alternatives: "", humanInLoop: "Controller approves exceptions and the final batch total.", impact: 3, effort: 1, hoursPerMonth: 45, cycleTimeEffect: "Average wait for payment drops from ~3.5 days to ~1.5 days.", risks: "Check cash forecasting with more frequent runs.", firstStep: "Agree a review threshold with the Controller." },
+    { id: "o5", title: "Auto-approve small recurring bills", category: "Eliminate", steps: ["s7", "s8", "s9"], summary: "Skip budget-owner approval for recurring vendors under $500 that match last month's amount.", how: "Policy change: utilities, subscriptions and other recurring vendors under $500 and within 10% of the prior bill post without approval. Budget owners get a monthly report instead.", tools: ["Approval policy update", "NetSuite saved search for the monthly report"], alternatives: "", humanInLoop: "Budget owners review the monthly report.", impact: 3, effort: 1, hoursPerMonth: 15, cycleTimeEffect: "Removes the 2-day approval wait for about a third of non-PO bills.", risks: "Needs Controller and auditor sign-off.", firstStep: "Pull six months of non-PO bills and count how many fit the rule." },
+    { id: "o6", title: "Claude drafts mismatch and clarification emails", category: "Claude", steps: ["s12", "s13"], summary: "When a bill fails matching or an approver has a question, Claude reads the PO, receipt and invoice, explains the gap and drafts the message to the right person.", how: "From the exception queue the clerk opens a Claude Project that holds the AP playbook and uses the Outlook and Drive connectors. Claude states which lines differ and the likely cause, then drafts emails to the buyer and the vendor with the evidence. The clerk edits and sends.", tools: ["Claude with Outlook or Gmail connector", "Claude Project with AP playbook", "NetSuite export"], alternatives: "Standard reason codes and email templates get part of the benefit without AI.", humanInLoop: "Clerk reviews and sends every message.", impact: 3, effort: 2, hoursPerMonth: 35, cycleTimeEffect: "Faster first response and fewer back-and-forth rounds.", risks: "Drafts to vendors must never send unreviewed.", firstStep: "Write a one-page mismatch playbook and test it in a Claude Project on 10 recent exceptions." },
+    { id: "o7", title: "Claude triages the AP inbox", category: "Claude", steps: ["s2"], summary: "Claude sorts every inbox email into invoice, statement, payment question or other, and drafts answers to payment questions from NetSuite data.", how: "An email flow sends each new message to Claude with a short classification prompt. Invoices go to intake, statements are filed, and payment questions get a drafted reply with the bill status from a NetSuite saved search. The clerk approves replies in one batch twice a day.", tools: ["Claude API or Claude with Outlook connector", "Power Automate", "NetSuite saved search"], alternatives: "Mail rules catch part of it; a vendor portal removes most status questions long term.", humanInLoop: "Clerk approves drafted replies.", impact: 3, effort: 2, hoursPerMonth: 25, cycleTimeEffect: "", risks: "Never auto-act on bank detail changes; route those to fraud checks.", firstStep: "Label 200 recent inbox emails by type to measure the mix." },
+    { id: "o8", title: "Vendor self-service invoice portal", category: "Self-service", steps: ["s1", "s2"], summary: "Top vendors submit invoices through a portal that requires a PO number and validates fields at entry.", how: "Use NetSuite's supplier portal or a simple form for the top 50 vendors. Required fields and PO lookup stop incomplete invoices at the source, and vendors can see payment status themselves.", tools: ["NetSuite supplier portal or form builder"], alternatives: "Require PO numbers on invoices in vendor terms.", humanInLoop: "", impact: 3, effort: 4, hoursPerMonth: 40, cycleTimeEffect: "Fewer invoices stall for missing information.", risks: "Vendor adoption is slow; start with the largest vendors.", firstStep: "Rank vendors by invoice count and missing-PO rate." }
+  ],
+  insights: [
+    { kind: "bottleneck", steps: ["s10"], text: "The weekly payment batch holds approved bills up to 7 days, the largest single wait in the process." },
+    { kind: "bottleneck", steps: ["s8"], text: "Email approvals for non-PO invoices take about 2 days plus reminders." },
+    { kind: "rework", steps: ["s12", "s5"], text: "About 12% of PO invoices fail matching and loop through investigation and re-matching." },
+    { kind: "handoff", steps: ["s7", "s8", "s13"], text: "Non-PO invoices can change hands four or more times before approval." },
+    { kind: "data", steps: ["s2", "s3"], text: "Invoice data is handled twice by hand (file naming, then ERP keying) with no structured capture at intake." },
+    { kind: "risk", steps: ["s8"], text: "Approval evidence lives in email replies, a weak audit trail for controls testing." }
+  ],
+  assumptions: ["Hands-on times are typical estimates for a mid-size AP team.", "Inbox wait of about 8 hours assumes one morning pass per day.", "Mismatch rate of ~12% and non-PO share of ~25% are taken from the description."],
+  questions: ["Which NetSuite modules are licensed today (bill capture, matching, approval workflows)?", "Which vendors send the most non-PO invoices, and are they recurring?", "Do any vendors offer early-payment discounts the weekly run is missing?", "Who maintains the cost center owner list, and how often is it updated?"]
+};
+
+/* ---------- normalization ---------- */
+const STEP_TYPES = ["start", "task", "decision", "wait", "automated", "end"];
+const LANE_KINDS = ["person", "team", "system", "external"];
+const BASIS = ["stated", "sourced", "known", "industry", "inferred"];
+const BASIS_NAME = { stated: "From your input", sourced: "Sourced", known: "Public knowledge", industry: "Industry practice", inferred: "Inferred" };
+const nums = x => arr(x).map(n => Math.round(num(n, -1))).filter(n => n > 0);
+function normalize(d, srcList, defBasis = "stated") {
+  if (!d || typeof d !== "object" || !Array.isArray(d.steps) || !d.steps.length) throw { code: "bad_shape" };
+  const p = d.process || {};
+  const out = {
+    process: { name: str(p.name) || "Untitled process", summary: str(p.summary), trigger: str(p.trigger), outcome: str(p.outcome), owner: str(p.owner), runsPerMonth: Math.max(0, num(p.runsPerMonth)), runsPerMonthBasis: p.runsPerMonthBasis === "stated" ? "stated" : "estimated" },
+    lanes: [], steps: [], opportunities: [], insights: [], assumptions: arr(d.assumptions).map(str).filter(Boolean), questions: arr(d.questions).map(str).filter(Boolean)
+  };
+  const laneIds = new Set();
+  arr(d.lanes).forEach((l, i) => {
+    let id = str(l?.id) || "l" + (i + 1); while (laneIds.has(id)) id += "x";
+    laneIds.add(id);
+    out.lanes.push({ id, name: str(l?.name) || "Lane " + (i + 1), kind: LANE_KINDS.includes(l?.kind) ? l.kind : "person" });
+  });
+  const stepIds = new Set();
+  d.steps.forEach((s, i) => {
+    let id = str(s?.id) || "s" + (i + 1); while (stepIds.has(id)) id += "x";
+    stepIds.add(id);
+    let lane = str(s?.lane);
+    if (!laneIds.has(lane)) {
+      if (!laneIds.has("unassigned")) { laneIds.add("unassigned"); out.lanes.push({ id: "unassigned", name: "Unassigned", kind: "person" }); }
+      lane = "unassigned";
+    }
+    out.steps.push({
+      id, lane, name: str(s?.name) || "Step " + (i + 1), type: STEP_TYPES.includes(s?.type) ? s.type : "task",
+      detail: str(s?.detail), touchMin: Math.max(0, num(s?.touchMin)), waitMin: Math.max(0, num(s?.waitMin)),
+      value: ["VA", "BVA", "NVA"].includes(s?.value) ? s.value : "BVA", automation: clamp(Math.round(num(s?.automation)), 0, 100),
+      tools: arr(s?.tools).map(str).filter(Boolean), inputs: arr(s?.inputs).map(str).filter(Boolean), outputs: arr(s?.outputs).map(str).filter(Boolean),
+      pains: arr(s?.pains).map(str).filter(Boolean), next: arr(s?.next),
+      basis: BASIS.includes(s?.basis) ? s.basis : (s?.inferred ? "inferred" : defBasis), sources: nums(s?.sources)
+    });
+  });
+  out.steps.forEach(s => {
+    s.next = s.next.map(e => typeof e === "string" ? { to: e, label: "" } : { to: str(e?.to), label: str(e?.label) })
+      .filter((e, i, a) => stepIds.has(e.to) && e.to !== s.id && a.findIndex(x => x.to === e.to) === i);
+  });
+  out.sources = arr(srcList || d.sources).map((x, i) => ({ n: Math.round(num(x?.n, i + 1)), title: str(x?.title) || str(x?.url), url: str(x?.url), kind: x?.kind === "page" ? "page" : "snippet", snippet: str(x?.snippet).slice(0, 400) }))
+    .filter(x => /^https?:\/\//i.test(x.url));
+  const srcNs = new Set(out.sources.map(x => x.n));
+  out.steps.forEach(s => {
+    s.sources = s.sources.filter(n => srcNs.has(n));
+    if (s.basis === "sourced" && !srcNs.size) s.basis = "known";
+  });
+  const oppIds = new Set();
+  arr(d.opportunities).forEach((o, i) => {
+    let id = str(o?.id) || "o" + (i + 1); while (oppIds.has(id)) id += "x";
+    oppIds.add(id);
+    out.opportunities.push({
+      id, title: str(o?.title) || "Opportunity " + (i + 1), category: CATS[o?.category] ? o.category : "Simplify",
+      steps: [...new Set(arr(o?.steps).map(str).filter(x => stepIds.has(x)))], summary: str(o?.summary), how: str(o?.how),
+      tools: arr(o?.tools).map(str).filter(Boolean), alternatives: str(o?.alternatives), humanInLoop: str(o?.humanInLoop),
+      impact: clamp(Math.round(num(o?.impact, 3)), 1, 5), effort: clamp(Math.round(num(o?.effort, 3)), 1, 5),
+      hoursPerMonth: Math.max(0, num(o?.hoursPerMonth)), cycleTimeEffect: str(o?.cycleTimeEffect), risks: str(o?.risks), firstStep: str(o?.firstStep)
+    });
+  });
+  out.insights = arr(d.insights).map(x => ({ kind: str(x?.kind) || "risk", steps: arr(x?.steps).map(str).filter(y => stepIds.has(y)), text: str(x?.text) })).filter(x => x.text);
+  const r = d.research;
+  out.research = r && typeof r === "object" ? {
+    summary: str(r.summary), confidence: ["high", "medium", "low"].includes(r.confidence) ? r.confidence : "medium",
+    findings: arr(r.findings).map(f => ({ text: str(f?.text), sources: nums(f?.sources).filter(n => srcNs.has(n)) })).filter(f => f.text),
+    gaps: arr(r.gaps).map(str).filter(Boolean),
+    mode: r.mode === "knowledge" ? "knowledge" : "web", company: str(r.company), topic: str(r.topic), note: str(r.note), read: num(r.read), found: num(r.found)
+  } : null;
+  out.files = arr(d.files).map(f => ({ name: str(f?.name), kind: str(f?.kind), note: str(f?.note) })).filter(f => f.name);
+  return out;
+}
+
+/* ---------- metrics ---------- */
+function computeMetrics(d, lay) {
+  const byId = new Map(d.steps.map(s => [s.id, s]));
+  const start = d.steps.find(s => s.type === "start") || d.steps[0];
+  const path = [], seen = new Set();
+  let cur = start;
+  while (cur && !seen.has(cur.id)) {
+    seen.add(cur.id); path.push(cur);
+    const nx = cur.next.find(e => !seen.has(e.to));
+    cur = nx ? byId.get(nx.to) : null;
+  }
+  const touch = path.reduce((a, s) => a + s.touchMin, 0);
+  const wait = path.reduce((a, s) => a + s.waitMin, 0);
+  let handoffs = 0;
+  d.steps.forEach(s => s.next.forEach(e => { if (byId.get(e.to).lane !== s.lane) handoffs++; }));
+  const runs = d.process.runsPerMonth;
+  return {
+    touch, wait, elapsed: touch + wait,
+    eff: touch + wait > 0 ? touch / (touch + wait) * 100 : null,
+    handoffs, decisions: d.steps.filter(s => s.type === "decision").length,
+    rework: lay ? lay.backCount : 0,
+    nva: d.steps.filter(s => s.value === "NVA").length,
+    hoursMonth: runs * touch / 60,
+    addressable: d.opportunities.reduce((a, o) => a + o.hoursPerMonth, 0)
+  };
+}
+
+/* ---------- map layout ---------- */
+const G = { labelW: 156, padL: 36, colW: 212, nodeW: 164, rowH: 118, lanePad: 6, padR: 28, padB: 4 };
+const SIZE = { task: [164, 64], automated: [164, 64], wait: [164, 64], decision: [128, 84], start: [150, 54], end: [150, 54] };
+const colLeft = r => G.labelW + G.padL + r * G.colW;
+
+function layout(d) {
+  const byId = new Map(d.steps.map(s => [s.id, s]));
+  const indegAll = new Map(d.steps.map(s => [s.id, 0]));
+  d.steps.forEach(s => s.next.forEach(e => indegAll.set(e.to, indegAll.get(e.to) + 1)));
+  let roots = d.steps.filter(s => s.type === "start");
+  if (!roots.length) roots = d.steps.filter(s => !indegAll.get(s.id));
+  if (!roots.length) roots = [d.steps[0]];
+  // Depth-first walk marks back edges (rework loops) so ranks come from forward flow only.
+  const color = new Map(), back = new Set();
+  const visit = id => {
+    color.set(id, 1);
+    for (const e of byId.get(id).next) {
+      const c = color.get(e.to);
+      if (c === 1) back.add(id + ">" + e.to); else if (!c) visit(e.to);
+    }
+    color.set(id, 2);
+  };
+  roots.forEach(s => { if (!color.get(s.id)) visit(s.id); });
+  d.steps.forEach(s => { if (!color.get(s.id)) visit(s.id); });
+
+  const indeg = new Map(d.steps.map(s => [s.id, 0]));
+  d.steps.forEach(s => s.next.forEach(e => { if (!back.has(s.id + ">" + e.to)) indeg.set(e.to, indeg.get(e.to) + 1); }));
+  const rank = new Map(d.steps.map(s => [s.id, 0]));
+  const q = d.steps.filter(s => indeg.get(s.id) === 0).map(s => s.id);
+  while (q.length) {
+    const id = q.shift();
+    for (const e of byId.get(id).next) {
+      if (back.has(id + ">" + e.to)) continue;
+      rank.set(e.to, Math.max(rank.get(e.to), rank.get(id) + 1));
+      indeg.set(e.to, indeg.get(e.to) - 1);
+      if (indeg.get(e.to) === 0) q.push(e.to);
+    }
+  }
+
+  const laneIdx = new Map(d.lanes.map((l, i) => [l.id, i]));
+  const cells = new Map(), nodes = new Map();
+  for (const s of d.steps) {
+    const li = laneIdx.get(s.lane), r = rank.get(s.id), k = li + ":" + r;
+    const sub = cells.get(k) || 0; cells.set(k, sub + 1);
+    nodes.set(s.id, { s, li, rank: r, sub });
+  }
+  const laneSubs = d.lanes.map(() => 1);
+  nodes.forEach(n => laneSubs[n.li] = Math.max(laneSubs[n.li], n.sub + 1));
+  const laneTop = []; let y = 0;
+  d.lanes.forEach((l, i) => { laneTop[i] = y; y += laneSubs[i] * G.rowH + G.lanePad * 2; });
+  const maxRank = Math.max(0, ...[...nodes.values()].map(n => n.rank));
+  const W = colLeft(maxRank) + G.nodeW + G.padR, H = y + G.padB;
+  const occ = new Set();
+  nodes.forEach(n => {
+    const [w, h] = SIZE[n.s.type];
+    n.w = w; n.h = h;
+    n.cx = colLeft(n.rank) + G.nodeW / 2;
+    n.cy = laneTop[n.li] + G.lanePad + n.sub * G.rowH + G.rowH / 2;
+    n.row = n.li + ":" + n.sub;
+    occ.add(n.row + "|" + n.rank);
+  });
+  const rowClear = (row, r1, r2) => { for (let r = Math.min(r1, r2) + 1; r < Math.max(r1, r2); r++) if (occ.has(row + "|" + r)) return false; return true; };
+
+  const edges = []; let backCount = 0; const backSlots = new Map();
+  d.steps.forEach(s => s.next.forEach(e => {
+    const a = nodes.get(s.id), b = nodes.get(e.to);
+    const isBack = back.has(s.id + ">" + e.to);
+    const kind = isBack ? "rework" : (a.s.lane !== b.s.lane ? "handoff" : "flow");
+    let pts, lx, ly, anchor = "start";
+    if (isBack) {
+      backCount++;
+      const base = Math.max(a.cy + a.h / 2, b.cy + b.h / 2) + 16;
+      const key = Math.round(base);
+      const k = backSlots.get(key) || 0; backSlots.set(key, k + 1);
+      const yy = base + k * 7;
+      pts = [[a.cx, a.cy + a.h / 2], [a.cx, yy], [b.cx, yy], [b.cx, b.cy + b.h / 2]];
+      lx = (a.cx + b.cx) / 2; ly = yy - 5; anchor = "middle";
+    } else if (a.row === b.row) {
+      if (rowClear(a.row, a.rank, b.rank)) {
+        pts = [[a.cx + a.w / 2, a.cy], [b.cx - b.w / 2, b.cy]];
+        lx = a.cx + a.w / 2 + 6; ly = a.cy - 7;
+      } else {
+        const yt = a.cy - G.rowH / 2 + 8;
+        pts = [[a.cx, a.cy - a.h / 2], [a.cx, yt], [b.cx, yt], [b.cx, b.cy - b.h / 2]];
+        lx = (a.cx + b.cx) / 2; ly = yt - 4; anchor = "middle";
+      }
+    } else {
+      const gap = (G.colW - G.nodeW) / 2;
+      let gx = colLeft(a.rank) + G.nodeW + gap;
+      if (!rowClear(b.row, a.rank, b.rank) && rowClear(a.row, a.rank, b.rank)) gx = colLeft(b.rank) - gap;
+      pts = [[a.cx + a.w / 2, a.cy], [gx, a.cy], [gx, b.cy], [b.cx - b.w / 2, b.cy]];
+      lx = gx + 5; ly = (a.cy + b.cy) / 2 + 4;
+    }
+    edges.push({ from: s.id, to: e.to, label: e.label, kind, pts, lx, ly, anchor });
+  }));
+  return { nodes, edges, laneTop, laneSubs, W, H, backCount };
+}
+
+function poly(pts, r = 9) {
+  pts = pts.filter((p, i) => i === 0 || p[0] !== pts[i - 1][0] || p[1] !== pts[i - 1][1]);
+  let d = `M${pts[0][0]},${pts[0][1]}`;
+  for (let i = 1; i < pts.length - 1; i++) {
+    const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], [x2, y2] = pts[i + 1];
+    const d1 = Math.hypot(x1 - x0, y1 - y0), d2 = Math.hypot(x2 - x1, y2 - y1);
+    const rr = Math.min(r, d1 / 2, d2 / 2);
+    d += ` L${x1 - (x1 - x0) / d1 * rr},${y1 - (y1 - y0) / d1 * rr} Q${x1},${y1} ${x1 + (x2 - x1) / d2 * rr},${y1 + (y2 - y1) / d2 * rr}`;
+  }
+  const l = pts[pts.length - 1];
+  return d + ` L${l[0]},${l[1]}`;
+}
+
+function wrap(text, max, lines) {
+  const words = String(text).split(/\s+/).filter(Boolean), out = [];
+  let cur = "";
+  for (const w of words) {
+    if (!cur) cur = w;
+    else if ((cur + " " + w).length <= max) cur += " " + w;
+    else { out.push(cur); cur = w; }
+  }
+  if (cur) out.push(cur);
+  if (out.length > lines) { out.length = lines; out[lines - 1] = out[lines - 1].replace(/.{0,2}$/, "") + "…"; }
+  return out.map(l => l.length > max + 2 ? l.slice(0, max) + "…" : l);
+}
+
+/* ---------- state ---------- */
+const state = {
+  data: null, input: null, isExample: true, recentId: null,
+  selected: null, highlight: null, colorBy: "value", zoom: 1, tab: "map", oppFilter: "all",
+  depth: "default", mode: "describe", files: [], ai: null, history: [],
+  dives: {}, plans: {}, lay: null, m: null, ctl: null, busy: false, stageIdx: -1
+};
+/* ---------- server API ---------- */
+const healthPromise = fetch("/api/health", { cache: "no-store" }).then(r => r.ok ? r.json() : null).catch(() => null);
+const AI_OFF_TITLE = "The analysis service isn't set up yet";
+// Streams one task from the server. Events arrive as newline-delimited JSON:
+// text deltas, "reset" when a web tool ran (earlier text was narration), status for searches and reads,
+// then "done" with the pages Claude actually saw, or "error" with a code.
+async function callApi(task, payload, { signal, onText, onStatus } = {}) {
+  const code = $("#access-code").value.trim();
+  let res;
+  try {
+    res = await fetch("/api/run", { method: "POST", headers: { "Content-Type": "application/json", ...(code ? { "X-Access-Code": code } : {}) }, body: JSON.stringify({ task, payload }), signal });
+  } catch { throw { code: signal?.aborted ? "cancelled" : "network" }; }
+  if (!res.ok) {
+    let j = {};
+    try { j = await res.json(); } catch {}
+    throw { code: j.code || (res.status === 413 ? "too_large" : res.status === 429 ? "rate_limited" : "upstream_error"), retryAfter: j.retryAfter };
+  }
+  const reader = res.body.getReader(), dec = new TextDecoder();
+  let buf = "", text = "", segment = "", done = null, err = null;
+  const handle = line => {
+    if (!line.trim()) return;
+    let ev; try { ev = JSON.parse(line); } catch { return; }
+    if (ev.type === "text") { text += ev.delta; segment += ev.delta; onText?.({ text, delta: ev.delta, segment }); }
+    else if (ev.type === "reset") segment = "";
+    else if (ev.type === "status") onStatus?.(ev);
+    else if (ev.type === "done") done = ev;
+    else if (ev.type === "error") err = ev;
+  };
+  try {
+    for (;;) {
+      const { done: end, value } = await reader.read();
+      if (end) break;
+      buf += dec.decode(value, { stream: true });
+      let i;
+      while ((i = buf.indexOf("\n")) >= 0) { handle(buf.slice(0, i)); buf = buf.slice(i + 1); }
+    }
+    handle(buf);
+  } catch { throw { code: signal?.aborted ? "cancelled" : "network", text }; }
+  if (err) throw { code: err.code, text };
+  if (!done) throw { code: signal?.aborted ? "cancelled" : "network", text };
+  return { text, segment, truncated: !!done.truncated, sources: arr(done.sources) };
+}
+function parseJson(t) {
+  if (!t || !t.trim()) return null;
+  try { return JSON.parse(t); } catch {}
+  const f = t.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (f) { try { return JSON.parse(f[1]); } catch {} }
+  const a = t.indexOf("{"), b = t.lastIndexOf("}");
+  if (a >= 0 && b > a) { try { return JSON.parse(t.slice(a, b + 1)); } catch {} }
+  return null;
+}
+async function callJson(task, payload, opts) {
+  const r = await callApi(task, payload, opts);
+  const value = parseJson(r.segment) ?? parseJson(r.text);
+  if (value == null || typeof value !== "object") throw { code: "invalid_json", text: r.text };
+  return { value, sources: r.sources, truncated: r.truncated };
+}
+
+
+const oppNum = id => state.data.opportunities.findIndex(o => o.id === id) + 1;
+const oppById = id => state.data.opportunities.find(o => o.id === id);
+const oppsForStep = id => state.data.opportunities.filter(o => o.steps.includes(id));
+const stepById = id => state.data.steps.find(s => s.id === id);
+const laneById = id => state.data.lanes.find(l => l.id === id);
+function quadrant(o) {
+  if (o.impact >= 3 && o.effort <= 2) return ["Quick win", "qw-tag"];
+  if (o.impact >= 3) return ["Big bet", "bb-tag"];
+  if (o.effort <= 2) return ["Fill-in", ""];
+  return ["Deprioritize", ""];
+}
+
+function setData(data, opts = {}) {
+  state.data = data;
+  state.isExample = !!opts.example;
+  state.input = opts.input || null;
+  state.recentId = opts.recentId || null;
+  state.selected = null; state.highlight = null;
+  state.dives = opts.dives || {}; state.plans = opts.plans || {};
+  if (!opts.keepHistory) state.history = [];
+  renderAll();
+  renderRecent();
+}
+
+/* ---------- render: summary ---------- */
+function renderAll() {
+  state.lay = layout(state.data);
+  state.m = computeMetrics(state.data, state.lay);
+  $("#example-flag").hidden = !state.isExample;
+  renderSummary(); renderMap(); renderRail(); renderOpps(); renderSteps(); renderQuestions(); renderSources();
+  $("#ct-opps").textContent = state.data.opportunities.length;
+  $("#ct-steps").textContent = state.data.steps.length;
+  $("#ct-qs").textContent = state.data.questions.length || "";
+}
+
+function renderSummary() {
+  const d = state.data, p = d.process, m = state.m, r = d.research;
+  const eff = m.eff == null ? "–" : (m.eff < 10 ? m.eff.toFixed(1) : Math.round(m.eff)) + "%";
+  const tiles = [
+    ["Steps", d.steps.length, `${plural(m.decisions, "decision")} · ${m.nva} waste`],
+    ["Handoffs", m.handoffs, "between lanes"],
+    ["Rework loops", m.rework, m.rework ? "paths back to an earlier step" : "none found"],
+    ["Hands-on", fmtMin(m.touch), "per run, main path"],
+    ["Elapsed", fmtMin(m.elapsed), "per run, main path"],
+    ["Flow efficiency", eff, "hands-on ÷ elapsed", m.eff != null && m.eff < 15],
+    ["Team hours / mo", p.runsPerMonth ? fmtInt(m.hoursMonth) : "–", p.runsPerMonth ? `${fmtInt(p.runsPerMonth)} runs (${p.runsPerMonthBasis})` : "volume unknown"],
+    ["Addressable", fmtInt(m.addressable) + "h", "est. saved / month; estimates overlap"]
+  ];
+  const eyebrow = r ? (r.mode === "web" ? `Researched map · ${plural(d.sources.length, "source")}` : "Researched map · Claude's knowledge, no live search") : "Current-state map";
+  const off = state.ai === false;
+  $("#summary").innerHTML = `
+    <div class="sum-top">
+      <div class="eyebrow">${esc(eyebrow)}${p.owner ? " · owner: " + esc(p.owner) : ""}</div>
+      <h2>${esc(p.name)}</h2>
+      ${p.summary ? `<p>${esc(p.summary)}</p>` : ""}
+      ${p.trigger || p.outcome ? `<div class="flowline"><span class="fl"><span class="eyebrow">Trigger</span><span class="pt">${esc(p.trigger || "Not stated")}</span></span><span class="arr" aria-hidden="true">→</span><span class="fl"><span class="eyebrow">Outcome</span><span class="pt">${esc(p.outcome || "Not stated")}</span></span></div>` : ""}
+    </div>
+    <div class="tiles">${tiles.map(t => `<div class="tile"><span class="eyebrow">${t[0]}</span><span class="v${t[3] ? " bad" : ""}">${esc(t[1])}</span><span class="s">${esc(t[2])}</span></div>`).join("")}</div>
+    <div class="refine">
+      <input class="inp" id="refine-in" ${off ? `disabled placeholder="The analysis service isn't set up yet"` : `placeholder="Correct or add detail, e.g. “Approvals over $10k also go to the CFO”"`} aria-label="Correction or new detail">
+      <button class="btn" id="btn-refine" type="button"${off || state.busy ? " disabled" : ""}>Update map</button>
+      <div class="refine-status note" id="refine-status" aria-live="polite"></div>
+    </div>`;
+  $("#btn-refine").onclick = () => { const v = $("#refine-in").value.trim(); if (v) refine(v); else $("#refine-in").focus(); };
+  $("#refine-in").onkeydown = e => { if (e.key === "Enter") $("#btn-refine").click(); };
+}
+function setRefineStatus(text, kind = "", undo = false) {
+  const el = $("#refine-status"); if (!el) return;
+  el.className = "refine-status note" + (kind ? " " + kind : "");
+  el.innerHTML = `<span>${esc(text)}</span>${undo ? `<button class="btn sm" type="button" data-undo>Undo</button>` : ""}`;
+}
+
+/* ---------- render: map ---------- */
+function renderMap() {
+  const d = state.data, L = state.lay, z = state.zoom, bodyW = L.W - G.labelW;
+  // Lane names live in their own SVG that stays pinned to the left edge while the flow scrolls sideways.
+  let lanes = `<svg class="map map-lanes" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${G.labelW} ${L.H}" width="${Math.round(G.labelW * z)}" height="${Math.round(L.H * z)}" aria-hidden="true">`;
+  let svg = `<svg class="map map-main mode-${state.colorBy}" xmlns="http://www.w3.org/2000/svg" viewBox="${G.labelW} 0 ${bodyW} ${L.H}" width="${Math.round(bodyW * z)}" height="${Math.round(L.H * z)}" role="group" aria-label="Swimlane map of ${esc(d.process.name)}: ${d.steps.length} steps across ${d.lanes.length} lanes. Select a step for details.">
+  <defs>
+    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle class="dot" cx="1" cy="1" r="1"/></pattern>
+    ${["flow", "handoff", "rework"].map(k => `<marker id="ah-${k}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah-${k}" d="M0,0 L10,5 L0,10 z"/></marker>`).join("")}
+  </defs>`;
+  d.lanes.forEach((l, i) => {
+    const top = L.laneTop[i], h = L.laneSubs[i] * G.rowH + G.lanePad * 2;
+    svg += `<rect class="${i % 2 ? "lane-b" : "lane-a"}" x="${G.labelW}" y="${top}" width="${bodyW}" height="${h}"/>`;
+    svg += `<rect fill="url(#dots)" x="${G.labelW}" y="${top}" width="${bodyW}" height="${h}"/>`;
+    lanes += `<rect class="lane-band${i % 2 ? " b" : ""}" x="0" y="${top}" width="${G.labelW}" height="${h}"/>`;
+    const lines = wrap(l.name, 17, 3);
+    const ty = top + h / 2 - (lines.length * 15 + 12) / 2 + 12;
+    lanes += `<text class="lane-kind" x="16" y="${ty}">${esc(l.kind.toUpperCase())}</text>`;
+    lines.forEach((t, j) => lanes += `<text class="lane-name" x="16" y="${ty + 16 + j * 15}">${esc(t)}</text>`);
+    if (i) {
+      svg += `<line class="lane-rule" x1="${G.labelW}" x2="${L.W}" y1="${top}" y2="${top}"/>`;
+      lanes += `<line class="lane-rule" x1="0" x2="${G.labelW}" y1="${top}" y2="${top}"/>`;
+    }
+  });
+  lanes += `</svg>`;
+
+  L.edges.forEach(e => {
+    svg += `<path class="edge ${e.kind}" data-from="${esc(e.from)}" data-to="${esc(e.to)}" d="${poly(e.pts)}" marker-end="url(#ah-${e.kind})"/>`;
+  });
+  L.edges.forEach(e => {
+    if (!e.label) return;
+    const w = e.label.length * 5.9 + 8;
+    const x = e.anchor === "middle" ? e.lx - w / 2 : e.lx - 3;
+    svg += `<g data-from="${esc(e.from)}" data-to="${esc(e.to)}"><rect class="el-bg" x="${x}" y="${e.ly - 11}" width="${w}" height="15" rx="3"/><text class="el" x="${e.anchor === "middle" ? e.lx : e.lx + 1}" y="${e.ly}" text-anchor="${e.anchor}">${esc(e.label)}</text></g>`;
+  });
+
+  L.nodes.forEach(n => {
+    const s = n.s, x = n.cx - n.w / 2, y = n.cy - n.h / 2;
+    const term = s.type === "start" || s.type === "end";
+    const cls = ["node", "t-" + s.type, "v-" + s.value, "b-" + s.basis];
+    if (term) cls.push("term");
+    const fill = state.colorBy === "auto" && !term ? ` style="fill:color-mix(in srgb,var(--accent) ${Math.round(s.automation * 0.42)}%,var(--sheet));stroke:var(--accent)"` : "";
+    const lane = laneById(s.lane)?.name || "";
+    let g = `<g class="${cls.join(" ")}" data-step="${esc(s.id)}" tabindex="0" role="button" aria-pressed="false" aria-label="${esc(`${s.name}. ${lane}, ${TYPE_NAME[s.type]}, ${VALUE_NAME[s.value]}`)}">`;
+    g += `<title>${esc(s.name)}${s.detail ? "\n" + esc(s.detail) : ""}</title>`;
+    if (s.type === "decision") g += `<polygon class="shape" points="${n.cx},${y} ${x + n.w},${n.cy} ${n.cx},${y + n.h} ${x},${n.cy}"${fill}/>`;
+    else g += `<rect class="shape" x="${x}" y="${y}" width="${n.w}" height="${n.h}" rx="${term ? n.h / 2 : 9}"${fill}/>`;
+    if (s.type === "automated") g += `<rect class="inner" x="${x + 3.5}" y="${y + 3.5}" width="${n.w - 7}" height="${n.h - 7}" rx="6.5"/>`;
+    if (s.type === "wait") g += `<path class="inner" d="M${x + 12},${y + 10} h10 l-10,12 h10 z"/>`;
+    const lines = s.type === "decision" ? wrap(s.name, 13, 3) : wrap(s.name, term ? 20 : 22, 2);
+    const showMeta = !term && s.type !== "decision";
+    const blockH = lines.length * 14.5 + (showMeta ? 15 : 0);
+    let ty = n.cy - blockH / 2 + 11;
+    lines.forEach(t => { g += `<text class="nm" x="${n.cx}" y="${ty}" text-anchor="middle">${esc(t)}</text>`; ty += 14.5; });
+    if (showMeta) {
+      const meta = state.colorBy === "auto" ? `${s.automation}% automatable` : `${fmtMin(s.touchMin)} hands-on`;
+      g += `<text class="meta" x="${n.cx}" y="${ty + 2}" text-anchor="middle">${esc(meta)}</text>`;
+    }
+    if (s.waitMin > 0) {
+      const tx = n.cx - n.w / 2 - 11, tyy = n.cy - 15;
+      g += `<path class="q-tri${s.waitMin >= 1440 ? " long" : ""}" d="M${tx - 7},${tyy + 6} L${tx + 7},${tyy + 6} L${tx},${tyy - 6} z"/>`;
+      g += `<text class="q-txt" x="${tx}" y="${tyy - 10}" text-anchor="middle">${esc(fmtMin(s.waitMin))}</text>`;
+    }
+    if (s.pains.length) {
+      const px = s.type === "decision" ? n.cx - 26 : x + 8, py = s.type === "decision" ? y + 12 : y;
+      g += `<g><title>${plural(s.pains.length, "pain point")}</title><circle class="pain-bg" cx="${px}" cy="${py}" r="7.5"/><text class="pain-txt" x="${px}" y="${py + 3.4}" text-anchor="middle">!</text><text class="pain-n" x="${px + 10}" y="${py + 3.6}">${s.pains.length}</text></g>`;
+    }
+    oppsForStep(s.id).slice(0, 4).forEach((o, i) => {
+      const bx = (s.type === "decision" ? n.cx + 26 : x + n.w - 4) - i * 17, by = s.type === "decision" ? y + 12 : y;
+      g += `<g class="${catCls(o.category)}"><title>Opportunity ${oppNum(o.id)}: ${esc(o.title)}</title><circle class="ob" cx="${bx}" cy="${by}" r="8"/><text class="ob-t" x="${bx}" y="${by + 3.3}" text-anchor="middle">${oppNum(o.id)}</text></g>`;
+    });
+    g += `</g>`;
+    svg += g;
+  });
+  svg += `</svg>`;
+  $("#stage").innerHTML = `<div class="stage-inner">${lanes}${svg}</div>`;
+  $("#z-val").textContent = Math.round(state.zoom * 100) + "%";
+  renderLegend();
+  paintMap();
+}
+
+// Selection and highlight change classes in place, so keyboard focus and scroll position survive.
+function paintMap() {
+  const svg = $("#stage .map-main"); if (!svg) return;
+  const hl = state.highlight && oppById(state.highlight);
+  const set = hl ? new Set(hl.steps) : null;
+  svg.querySelectorAll(".node").forEach(g => {
+    const id = g.dataset.step, sel = id === state.selected;
+    g.classList.toggle("sel", sel);
+    g.setAttribute("aria-pressed", String(sel));
+    g.classList.toggle("hl", !!set && set.has(id));
+    g.classList.toggle("dim", !!set && !set.has(id));
+  });
+  svg.querySelectorAll("[data-from]").forEach(el => el.classList.toggle("dim", !!set && !(set.has(el.dataset.from) && set.has(el.dataset.to))));
+  $("#hl-slot").innerHTML = hl ? `<span class="hlchip"><span>Showing #${oppNum(hl.id)}: ${esc(hl.title)}</span><button class="btn ghost sm" type="button" data-clear-hl aria-label="Stop highlighting this opportunity">✕</button></span>` : "";
+}
+
+function renderLegend() {
+  const v = state.colorBy;
+  let h = "";
+  if (v === "value") h += `<span><i class="sw" style="background:var(--va-soft);border-color:var(--va)"></i>Value-adding</span><span><i class="sw" style="background:var(--bva-soft);border-color:var(--bva)"></i>Business-required</span><span><i class="sw" style="background:var(--nva-soft);border-color:var(--nva)"></i>Waste</span>`;
+  if (v === "auto") h += `<span><i class="sw" style="background:var(--sheet);border-color:var(--accent)"></i>Low</span><span><i class="sw" style="background:color-mix(in srgb,var(--accent) 42%,var(--sheet));border-color:var(--accent)"></i>High automation potential</span>`;
+  h += `<span><i class="ln" style="border-color:var(--handoff)"></i>Handoff</span><span><i class="ln" style="border-color:var(--nva);border-top-style:dashed"></i>Rework loop</span>`;
+  h += `<span><svg width="14" height="12" aria-hidden="true"><path d="M0,11 L14,11 L7,1 z" style="fill:var(--nva)"/></svg>Wait before step</span>`;
+  h += `<span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="7" style="fill:var(--nva)"/><text x="7" y="10.5" text-anchor="middle" style="fill:var(--sheet);font:700 10px var(--f-mono)">!</text></svg>Pain points</span>`;
+  h += `<span><svg width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="7" style="fill:var(--c-claude)"/><text x="7" y="10.5" text-anchor="middle" style="fill:var(--sheet);font:700 9px var(--f-mono)">1</text></svg>Opportunity number</span>`;
+  if (state.data.steps.some(s => s.basis === "industry")) h += `<span><i class="sw" style="border-style:dotted;border-color:var(--ink-2)"></i>Industry practice</span>`;
+  if (state.data.steps.some(s => s.basis === "inferred")) h += `<span><i class="sw" style="border-style:dashed;border-color:var(--ink-2)"></i>Inferred</span>`;
+  $("#legend").innerHTML = h;
+}
+
+// The pinned lane band covers the left edge of the stage, so "visible" starts to its right.
+function nodeVisible(n) {
+  const st = $("#stage"), z = state.zoom, band = G.labelW * z;
+  const l = (n.cx - n.w / 2) * z, r = (n.cx + n.w / 2) * z, t = (n.cy - n.h / 2) * z, b = (n.cy + n.h / 2) * z;
+  return l >= st.scrollLeft + band && r <= st.scrollLeft + st.clientWidth && t >= st.scrollTop && b <= st.scrollTop + st.clientHeight;
+}
+function scrollMapTo(cx, cy) {
+  const st = $("#stage"), z = state.zoom, band = G.labelW * z;
+  st.scrollTo({ left: Math.max(0, cx * z - band - (st.clientWidth - band) / 2), top: Math.max(0, cy * z - st.clientHeight / 2), behavior: behavior() });
+}
+function setZoom(z) {
+  const st = $("#stage"), lanes = $("#stage .map-lanes"), svg = $("#stage .map-main"); if (!svg || !lanes) return;
+  const old = state.zoom; z = clamp(Math.round(z * 100) / 100, 0.3, 2);
+  if (z === old) return;
+  const cx = (st.scrollLeft + st.clientWidth / 2) / old, cy = (st.scrollTop + st.clientHeight / 2) / old;
+  state.zoom = z;
+  lanes.setAttribute("width", Math.round(G.labelW * z)); lanes.setAttribute("height", Math.round(state.lay.H * z));
+  svg.setAttribute("width", Math.round((state.lay.W - G.labelW) * z)); svg.setAttribute("height", Math.round(state.lay.H * z));
+  st.scrollLeft = cx * z - st.clientWidth / 2; st.scrollTop = cy * z - st.clientHeight / 2;
+  $("#z-val").textContent = Math.round(z * 100) + "%";
+}
+function fitZoom() {
+  const st = $("#stage");
+  const availH = matchMedia("(max-width:820px)").matches ? Infinity : innerHeight * 0.78 - 2;
+  setZoom(Math.min(1.25, (st.clientWidth - 2) / state.lay.W, availH / state.lay.H));
+}
+
+/* ---------- render: rail ---------- */
+function renderRail() {
+  const rail = $("#rail"), d = state.data;
+  const s = state.selected && stepById(state.selected);
+  const hl = !s && state.highlight && oppById(state.highlight);
+  if (hl) {
+    const [qn, qc] = quadrant(hl);
+    rail.innerHTML = `
+      <div class="rail-head"><div><div class="eyebrow">Opportunity ${oppNum(hl.id)}</div><h3 style="margin-top:4px">${esc(hl.title)}</h3></div>
+        <button class="btn ghost sm" type="button" data-clear-hl aria-label="Stop highlighting">✕</button></div>
+      <div class="chips"><span class="chip cat ${catCls(hl.category)}">${esc(hl.category)}</span><span class="chip ${qc}">${qn}</span><span class="chip">~${fmtInt(hl.hoursPerMonth)}h / month</span></div>
+      <p class="detail">${esc(hl.summary)}</p>
+      <div class="sect"><span class="eyebrow">Steps it changes</span><div class="chips">${hl.steps.map(id => `<button type="button" class="chip link" data-goto="${esc(id)}">${esc(stepById(id)?.name || id)}</button>`).join("") || `<span class="note">No specific steps.</span>`}</div></div>
+      <div><button class="btn sm" type="button" data-opp="${esc(hl.id)}">Open the full card</button></div>`;
+    return;
+  }
+  if (!s) {
+    const kinds = { bottleneck: "Bottleneck", rework: "Rework", handoff: "Handoffs", risk: "Risk", data: "Data" };
+    rail.innerHTML = `
+      <div><div class="eyebrow">Diagnosis</div><h3 style="margin-top:4px">Where the time goes</h3></div>
+      <p class="note">Select a step on the map for its details, the opportunities that touch it, and a deeper breakdown.</p>
+      <div>${d.insights.length ? d.insights.map(x => `<div class="insight"><span class="k"><span class="chip ${x.kind === "bottleneck" || x.kind === "rework" ? "NVA" : x.kind === "risk" ? "BVA" : ""}">${esc(kinds[x.kind] || x.kind)}</span></span><div style="min-width:0">${esc(x.text)}${x.steps.length ? `<div class="chips" style="margin-top:5px">${x.steps.map(id => `<button type="button" class="chip link" data-goto="${esc(id)}">${esc(stepById(id)?.name || id)}</button>`).join("")}</div>` : ""}</div></div>`).join("") : `<p class="note">No diagnosis came back for this map.</p>`}</div>`;
+    return;
+  }
+  const lane = laneById(s.lane), ops = oppsForStep(s.id);
+  const nexts = s.next.map(e => ({ e, t: stepById(e.to) }));
+  const prev = d.steps.filter(x => x.next.some(e => e.to === s.id));
+  const dive = state.dives[s.id], off = state.ai === false;
+  rail.innerHTML = `
+    <div class="rail-head">
+      <div class="chips"><span class="chip">${esc(lane?.name || "")}</span><span class="chip">${esc(TYPE_NAME[s.type])}</span><span class="chip ${s.value}">${VALUE_NAME[s.value]}</span><span class="chip" title="Where this step comes from">${BASIS_NAME[s.basis]}</span></div>
+      <button class="btn ghost sm" type="button" data-close-rail aria-label="Close step details">✕</button>
+    </div>
+    <div><h3>${esc(s.name)}</h3>${s.detail ? `<p class="detail" style="margin-top:6px">${esc(s.detail)}</p>` : ""}</div>
+    ${s.sources.length ? `<div class="sect"><span class="eyebrow">Sources</span>${s.sources.map(n => srcLink(n, true)).join("")}</div>` : ""}
+    <div class="kv">
+      <div><span class="eyebrow">Hands-on</span><b>${fmtMin(s.touchMin)}</b></div>
+      <div><span class="eyebrow">Wait</span><b style="${s.waitMin >= 1440 ? "color:var(--nva)" : ""}">${fmtWait(s.waitMin)}</b></div>
+      <div><span class="eyebrow">Automatable</span><b>${s.automation}%</b><div class="bar"><i style="width:${s.automation}%"></i></div></div>
+    </div>
+    ${s.pains.length ? `<div class="sect"><span class="eyebrow">Pain points</span><ul class="pains">${s.pains.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>` : ""}
+    ${s.tools.length || s.inputs.length || s.outputs.length ? `<div class="sect">
+      ${s.tools.length ? `<span class="eyebrow">Tools</span><div class="chips">${s.tools.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}
+      ${s.inputs.length ? `<span class="eyebrow" style="margin-top:6px">Inputs</span><div class="chips">${s.inputs.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}
+      ${s.outputs.length ? `<span class="eyebrow" style="margin-top:6px">Outputs</span><div class="chips">${s.outputs.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</div>` : ""}
+    </div>` : ""}
+    <div class="sect"><span class="eyebrow">Flow</span>
+      <div class="chips">${prev.map(p => `<button type="button" class="chip link" data-goto="${esc(p.id)}">← ${esc(p.name)}</button>`).join("")}${nexts.map(({ e, t }) => `<button type="button" class="chip link" data-goto="${esc(t.id)}">${e.label ? esc(e.label) + ": " : ""}${esc(t.name)} →</button>`).join("")}</div>
+    </div>
+    <div class="sect"><span class="eyebrow">Opportunities here</span>
+      ${ops.length ? ops.map(o => `<button type="button" class="oplink" data-opp="${esc(o.id)}"><span class="num ${catCls(o.category)}">${oppNum(o.id)}</span><span style="min-width:0"><span class="t">${esc(o.title)}</span><br><span class="note">${esc(o.category)} · ~${fmtInt(o.hoursPerMonth)}h / month</span></span></button>`).join("") : `<p class="note">None proposed for this step.</p>`}
+    </div>
+    <div class="ai-out">
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between">
+        <span class="eyebrow">Deep dive</span>
+        ${dive?.status === "running" ? `<button class="btn sm" type="button" data-divestop="${esc(s.id)}">Stop</button>` : `<button class="btn sm ${dive ? "" : "primary"}" type="button" data-dive="${esc(s.id)}"${off ? ` disabled title="${AI_OFF_TITLE}"` : ""}>${dive ? "Run a fresh breakdown" : "Break this step down with Claude"}</button>`}
+      </div>
+      <div class="prose" id="dive-out" style="margin-top:8px">${dive ? diveHtml(dive) : `<p class="note">Sub-steps, root causes, automation options and a ready-to-use Claude prompt for this step.</p>`}</div>
+    </div>`;
+}
+function diveHtml(x) {
+  let h = x.text ? md(x.text) : (x.status === "running" ? `<p class="thinking">Thinking… this usually takes 20 to 60 seconds.</p>` : "");
+  if (x.truncated) h += `<p class="note">The answer was cut short.</p>`;
+  if (x.status === "stopped") h += `<p class="note">Stopped.</p>`;
+  if (x.err) h += `<p class="note err">${esc(x.err)}</p>`;
+  return h;
+}
+
+function selectStep(id) {
+  if (!stepById(id)) return;
+  state.selected = id;
+  if (state.tab !== "map") setTab("map");
+  paintMap(); renderRail();
+  const n = state.lay.nodes.get(id);
+  if (n && !nodeVisible(n)) scrollMapTo(n.cx, n.cy);
+  if (matchMedia("(max-width:1100px)").matches) $("#rail").scrollIntoView({ block: "nearest", behavior: behavior() });
+  srSay(`Showing details for ${stepById(id).name}`);
+}
+function closeRail() {
+  const id = state.selected;
+  state.selected = null; paintMap(); renderRail();
+  const g = id && $(`#stage [data-step="${CSS.escape(id)}"]`);
+  if (g) g.focus({ preventScroll: true });
+}
+function showOnMap(oid) {
+  const o = oppById(oid); if (!o) return;
+  state.highlight = oid; state.selected = null;
+  setTab("map"); paintMap(); renderRail();
+  const ns = o.steps.map(id => state.lay.nodes.get(id)).filter(Boolean);
+  if (ns.length) scrollMapTo(ns.reduce((a, n) => a + n.cx, 0) / ns.length, ns.reduce((a, n) => a + n.cy, 0) / ns.length);
+  $("#panel-map").scrollIntoView({ block: "nearest", behavior: behavior() });
+  srSay(`Highlighting opportunity ${oppNum(oid)} on the map`);
+}
+function clearHighlight() { state.highlight = null; paintMap(); renderRail(); }
+
+/* ---------- render: opportunities ---------- */
+function renderOpps() {
+  const d = state.data, panel = $("#panel-opportunities");
+  if (!d.opportunities.length) { panel.innerHTML = `<div class="empty">No opportunities came back for this map. Try “Update map” with more detail about volumes and pain points.</div>`; return; }
+  const nClaude = d.opportunities.filter(o => o.category === "Claude").length;
+  const list = d.opportunities.filter(o => state.oppFilter === "all" || (state.oppFilter === "claude" ? o.category === "Claude" : o.category !== "Claude"));
+  panel.innerHTML = `
+    <div class="opp-grid">
+      <div class="card matrix-card">
+        <div class="eyebrow">Impact vs effort</div>
+        ${matrixSvg()}
+        <p class="note" style="margin-top:8px">Bubble size shows estimated hours saved per month. Select a bubble to jump to it.</p>
+      </div>
+      <div style="min-width:0">
+        <div class="filters">
+          <div class="seg" role="group" aria-label="Filter opportunities">
+            <button type="button" data-oppfilter="all" aria-pressed="${state.oppFilter === "all"}">All ${d.opportunities.length}</button>
+            <button type="button" data-oppfilter="claude" aria-pressed="${state.oppFilter === "claude"}">With Claude ${nClaude}</button>
+            <button type="button" data-oppfilter="other" aria-pressed="${state.oppFilter === "other"}">Other approaches ${d.opportunities.length - nClaude}</button>
+          </div>
+        </div>
+        <div class="opp-list">${list.map(oppCard).join("") || `<div class="card empty">Nothing in this group.</div>`}</div>
+      </div>
+    </div>`;
+  list.forEach(o => paintOppDyn(o.id));
+}
+function pips(n, cls, label) { return `<div class="pips ${cls}" role="img" aria-label="${label} ${n} of 5">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= n ? "on" : ""}"></i>`).join("")}</div>`; }
+function oppCard(o) {
+  const n = oppNum(o.id), [qn, qc] = quadrant(o);
+  const row = (k, v) => v ? `<dt>${k}</dt><dd>${esc(v)}</dd>` : "";
+  return `<article class="card opp" id="opp-${esc(o.id)}" tabindex="-1" aria-labelledby="opp-t-${esc(o.id)}">
+    <div class="opp-head">
+      <span class="num ${catCls(o.category)}" aria-hidden="true">${n}</span>
+      <div style="min-width:0;flex:1">
+        <h3 id="opp-t-${esc(o.id)}"><span class="sr-only">Opportunity ${n}: </span>${esc(o.title)}</h3>
+        <div class="opp-meta"><span class="chip cat ${catCls(o.category)}">${esc(o.category)}</span><span class="chip ${qc}">${qn}</span></div>
+      </div>
+    </div>
+    ${o.summary ? `<p>${esc(o.summary)}</p>` : ""}
+    <div class="meters">
+      <div class="meter"><span class="lbl">Impact</span>${pips(o.impact, "imp", "Impact")}</div>
+      <div class="meter"><span class="lbl">Effort</span>${pips(o.effort, "eff", "Effort")}</div>
+      <div class="meter"><span class="lbl">Saves</span><b>~${fmtInt(o.hoursPerMonth)}h</b><span class="note" style="display:inline"> / mo</span></div>
+    </div>
+    ${o.steps.length ? `<div class="chips"><span class="eyebrow" style="align-self:center;margin-right:2px">Steps</span>${o.steps.map(id => `<button type="button" class="chip link" data-goto="${esc(id)}">${esc(stepById(id)?.name || id)}</button>`).join("")}</div>` : ""}
+    <details>
+      <summary>How it works</summary>
+      <dl class="dl">
+        ${row("Approach", o.how)}${o.tools.length ? `<dt>Tools</dt><dd><div class="chips">${o.tools.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div></dd>` : ""}
+        ${row("People still", o.humanInLoop)}${row("Cycle time", o.cycleTimeEffect)}${row("Risks", o.risks)}${row("Alternatives", o.alternatives)}${row("Start this week", o.firstStep)}
+      </dl>
+    </details>
+    <div class="opp-dyn" id="dyn-${esc(o.id)}"></div>
+  </article>`;
+}
+// Only the actions and plan area re-render, so an open "How it works" panel stays open.
+function paintOppDyn(id) {
+  const el = $("#dyn-" + CSS.escape(id)); if (!el) return;
+  const plan = state.plans[id], off = state.ai === false;
+  el.innerHTML = `<div class="opp-actions">
+      <button class="btn sm" type="button" data-show="${esc(id)}">Show on map</button>
+      ${plan?.status === "running" ? `<button class="btn sm" type="button" data-planstop="${esc(id)}">Stop</button>` : `<button class="btn sm${plan ? "" : " primary"}" type="button" data-plan="${esc(id)}"${off ? ` disabled title="${AI_OFF_TITLE}"` : ""}>${plan ? "Draft a new plan" : "Draft implementation plan"}</button>`}
+    </div>
+    ${plan ? `<div class="ai-out prose" id="plan-${esc(id)}">${diveHtml(plan)}</div>` : ""}`;
+}
+function matrixSvg() {
+  const d = state.data, W = 340, H = 300, L = 40, T = 14, R = 12, B = 40;
+  const x = e => L + (e - 0.5) / 5 * (W - L - R), y = i => T + (5.5 - i) / 5 * (H - T - B);
+  const maxH = Math.max(1, ...d.opportunities.map(o => o.hoursPerMonth));
+  let s = `<svg class="mx" viewBox="0 0 ${W} ${H}" role="group" aria-label="Impact versus effort matrix">`;
+  const mx = x(2.5), my = y(2.5);
+  s += `<rect class="quad qw" x="${L}" y="${T}" width="${mx - L}" height="${my - T}"/><rect class="quad" x="${mx}" y="${T}" width="${W - R - mx}" height="${my - T}"/><rect class="quad" x="${L}" y="${my}" width="${mx - L}" height="${H - B - my}"/><rect class="quad" x="${mx}" y="${my}" width="${W - R - mx}" height="${H - B - my}"/>`;
+  s += `<text class="ql" x="${L + 6}" y="${T + 13}">Quick wins</text><text class="ql" x="${W - R - 6}" y="${T + 13}" text-anchor="end">Big bets</text><text class="ql" x="${L + 6}" y="${H - B - 6}">Fill-ins</text><text class="ql" x="${W - R - 6}" y="${H - B - 6}" text-anchor="end">Deprioritize</text>`;
+  s += `<line class="axis" x1="${L}" x2="${W - R}" y1="${H - B}" y2="${H - B}"/><line class="axis" x1="${L}" x2="${L}" y1="${T}" y2="${H - B}"/>`;
+  for (let i = 1; i <= 5; i++) s += `<text class="tk" x="${x(i)}" y="${H - B + 14}" text-anchor="middle">${i}</text><text class="tk" x="${L - 8}" y="${y(i) + 3}" text-anchor="end">${i}</text>`;
+  s += `<text class="al" x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">Effort →</text><text class="al" transform="translate(12 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">Impact →</text>`;
+  const groups = new Map();
+  d.opportunities.forEach(o => { const k = o.impact + ":" + o.effort; groups.set(k, [...(groups.get(k) || []), o]); });
+  groups.forEach(g => g.forEach((o, i) => {
+    const r = 8 + Math.sqrt(o.hoursPerMonth / maxH) * 12;
+    const ang = g.length > 1 ? i / g.length * Math.PI * 2 - Math.PI / 2 : 0, off = g.length > 1 ? 15 : 0;
+    const cx = x(o.effort) + Math.cos(ang) * off, cy = y(o.impact) + Math.sin(ang) * off;
+    s += `<g class="${catCls(o.category)}"><circle class="bub" data-opp="${esc(o.id)}" tabindex="0" role="button" aria-label="Opportunity ${oppNum(o.id)}: ${esc(o.title)}" cx="${cx}" cy="${cy}" r="${r}" fill-opacity=".9"><title>#${oppNum(o.id)} ${esc(o.title)}</title></circle><text class="bt" x="${cx}" y="${cy + 3.8}" text-anchor="middle">${oppNum(o.id)}</text></g>`;
+  }));
+  return s + `</svg>`;
+}
+function gotoOpp(id) {
+  if (!oppById(id)) return;
+  const shown = state.oppFilter === "all" || (state.oppFilter === "claude") === (oppById(id).category === "Claude");
+  if (!shown) { state.oppFilter = "all"; renderOpps(); }
+  setTab("opportunities");
+  const el = $("#opp-" + CSS.escape(id));
+  if (el) {
+    el.scrollIntoView({ block: "start", behavior: behavior() });
+    el.focus({ preventScroll: true });
+    el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1600);
+  }
+}
+
+/* ---------- render: steps table ---------- */
+function renderSteps() {
+  const d = state.data;
+  $("#panel-steps").innerHTML = `<div class="tbl-wrap"><table class="steps">
+    <caption class="sr-only">All steps of ${esc(d.process.name)}. Select a row to see the step on the map.</caption>
+    <thead><tr><th scope="col">Step</th><th scope="col">Lane</th><th scope="col">Type</th><th scope="col">Hands-on</th><th scope="col">Wait</th><th scope="col">Value</th><th scope="col">Automatable</th><th scope="col">Pain points</th><th scope="col">Opportunities</th></tr></thead>
+    <tbody>${d.steps.map(s => `<tr class="row" data-goto="${esc(s.id)}" tabindex="0">
+      <td style="min-width:220px"><div class="nm">${esc(s.name)}${s.basis !== "stated" ? ` <span class="chip">${BASIS_NAME[s.basis]}</span>` : ""}${s.sources.map(n => srcLink(n)).join("")}</div><div class="sub">${esc(s.detail)}</div></td>
+      <td>${esc(laneById(s.lane)?.name || "")}</td><td>${TYPE_NAME[s.type]}</td>
+      <td class="n">${fmtMin(s.touchMin)}</td><td class="n" style="${s.waitMin >= 1440 ? "color:var(--nva);font-weight:600" : ""}">${s.waitMin > 0 ? fmtMin(s.waitMin) : "–"}</td>
+      <td><span class="chip ${s.value}">${VALUE_NAME[s.value]}</span></td>
+      <td class="n"><span class="autobar"><span class="bar"><i style="width:${s.automation}%"></i></span>${s.automation}%</span></td>
+      <td style="min-width:200px">${s.pains.length ? `<ul>${s.pains.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : `<span class="sub">–</span>`}</td>
+      <td><div class="chips">${oppsForStep(s.id).map(o => `<button type="button" class="num ${catCls(o.category)}" data-opp="${esc(o.id)}" title="${esc(o.title)}" aria-label="Opportunity ${oppNum(o.id)}: ${esc(o.title)}">${oppNum(o.id)}</button>`).join("") || `<span class="sub">–</span>`}</div></td>
+    </tr>`).join("")}</tbody></table></div>`;
+}
+
+/* ---------- render: questions ---------- */
+function renderQuestions() {
+  const d = state.data, off = state.ai === false;
+  $("#panel-questions").innerHTML = `<div class="q-grid">
+    <div class="card q-card">
+      <div><div class="eyebrow">Fill the gaps</div><h3 style="margin-top:4px">Answer what you can</h3><p class="note" style="margin-top:4px">Skip any you don't know. Claude updates the map, timings and opportunities with your answers.</p></div>
+      ${d.questions.length ? d.questions.map((q, i) => `<div class="q"><label for="qa-${i}">${esc(q)}</label><textarea id="qa-${i}" rows="1" placeholder="Your answer"></textarea></div>`).join("") : `<p class="note">No open questions for this map.</p>`}
+      ${d.questions.length ? `<div><button class="btn primary" type="button" id="btn-answers"${off || state.busy ? " disabled" : ""}${off ? ` title="${AI_OFF_TITLE}"` : ""}>Update the map with these answers</button></div>` : ""}
+    </div>
+    <div class="card q-card">
+      <div><div class="eyebrow">Assumptions</div><h3 style="margin-top:4px">What Claude assumed</h3></div>
+      ${d.assumptions.length ? `<ul class="assume" style="margin:0;padding-left:18px">${d.assumptions.map(a => `<li>${esc(a)}</li>`).join("")}</ul>` : `<p class="note">None listed.</p>`}
+      <p class="note">Steps drawn with dashed outlines on the map were inferred, and dotted ones come from typical industry practice. Correct anything that's wrong with the box under the summary.</p>
+    </div>
+  </div>`;
+  const b = $("#btn-answers");
+  if (b) b.onclick = () => {
+    const qa = d.questions.map((q, i) => [q, $("#qa-" + i).value.trim()]).filter(x => x[1]);
+    if (!qa.length) { toast("Answer at least one question first."); $("#qa-0")?.focus(); return; }
+    refine("Answers to your open questions:\n" + qa.map(([q, a]) => `Q: ${q}\nA: ${a}`).join("\n\n"));
+  };
+}
+
+/* ---------- render: sources ---------- */
+const srcBy = n => state.data.sources.find(x => x.n === n);
+function srcLink(n, full) {
+  const s = srcBy(n); if (!s) return "";
+  if (full) return `<div style="font-size:12.5px"><span class="mono" style="color:var(--muted)">[${n}]</span> <a class="ext" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a></div>`;
+  return `<a class="cite" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" title="${esc(s.title)}" aria-label="Source ${n}: ${esc(s.title)}">[${n}]</a>`;
+}
+const domain = u => { try { return new URL(u).hostname.replace(/^www\./, ""); } catch { return u; } };
+function renderSources() {
+  const d = state.data, r = d.research;
+  const show = !!(r || d.sources.length || d.files.length);
+  $("#tab-sources").hidden = !show;
+  $("#ct-src").textContent = d.sources.length || d.files.length || "";
+  const panel = $("#panel-sources");
+  if (!show) { panel.innerHTML = ""; if (state.tab === "sources") setTab("map"); return; }
+  const confChip = { high: "VA", medium: "BVA", low: "NVA" };
+  const cites = ns => ns.map(n => srcLink(n)).join("");
+  const count = b => d.steps.filter(s => s.basis === b).length;
+  const research = r ? `<div class="card src-card">
+      <div><div class="eyebrow">${r.mode === "web" ? `Live web research · ${plural(r.read, "page")} read · ${plural(r.found, "result")} scanned` : "Claude's general knowledge · no live search"}</div>
+      <h3 style="margin-top:4px">What the public record shows${r.company ? ` about ${esc(r.company)}` : ""}</h3></div>
+      ${r.note ? `<div class="notice">${esc(r.note)}</div>` : ""}
+      <div class="chips"><span class="chip ${confChip[r.confidence]}">Confidence: ${r.confidence}</span>${r.mode === "web" ? `<span class="chip">${count("sourced")} sourced</span>` : `<span class="chip">${count("known")} from public knowledge</span>`}<span class="chip">${count("industry")} industry practice</span><span class="chip">${count("inferred")} inferred</span></div>
+      ${r.summary ? `<p style="margin:0">${esc(r.summary)}</p>` : ""}
+      ${r.findings.length ? `<div class="sect"><span class="eyebrow">Findings</span><ul class="findings">${r.findings.map(f => `<li>${esc(f.text)}${cites(f.sources)}</li>`).join("")}</ul></div>` : ""}
+      ${r.gaps.length ? `<div class="sect"><span class="eyebrow">Not found publicly</span><ul class="findings">${r.gaps.map(g => `<li>${esc(g)}</li>`).join("")}</ul></div>` : ""}
+    </div>` : "";
+  const sources = d.sources.length ? `<div class="card src-card">
+      <div><div class="eyebrow">Sources</div><h3 style="margin-top:4px">${plural(d.sources.length, "source")} cited or scanned</h3></div>
+      <ol class="srclist">${d.sources.map(s => {
+        const used = d.steps.filter(x => x.sources.includes(s.n));
+        return `<li class="src"><span class="n">[${s.n}]</span><div style="min-width:0"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.title)}</a><div class="dom">${esc(domain(s.url))} · ${s.kind === "page" ? "read in full" : "search snippet"}</div>${used.length ? `<div class="chips" style="margin-top:5px">${used.map(x => `<button type="button" class="chip link" data-goto="${esc(x.id)}">${esc(x.name)}</button>`).join("")}</div>` : ""}</div></li>`;
+      }).join("")}</ol>
+    </div>` : "";
+  const files = d.files.length ? `<div class="card src-card"><div><div class="eyebrow">Your files</div><h3 style="margin-top:4px">Used for this map</h3></div>
+      <ul class="findings">${d.files.map(f => `<li><b>${esc(f.name)}</b>${f.note ? ` <span class="note" style="display:inline">· ${esc(f.note)}</span>` : ""}</li>`).join("")}</ul></div>` : "";
+  const left = research || files, right = research ? sources + files : sources;
+  panel.innerHTML = right
+    ? `<div class="src-grid"><div class="src-col">${left}</div><div class="src-col">${right}</div></div>`
+    : `<div class="src-grid single"><div class="src-col">${left}</div></div>`;
+}
+
+/* ---------- tabs ---------- */
+function setTab(t, focus = false) {
+  state.tab = t;
+  $$(".tab").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+  $$(".panel").forEach(p => p.hidden = p.id !== "panel-" + t);
+}
+$$(".tab").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+$("#tablist").addEventListener("keydown", e => {
+  const tabs = $$(".tab").filter(b => !b.hidden), i = tabs.findIndex(b => b.dataset.tab === state.tab);
+  let j = null;
+  if (e.key === "ArrowRight") j = (i + 1) % tabs.length;
+  else if (e.key === "ArrowLeft") j = (i - 1 + tabs.length) % tabs.length;
+  else if (e.key === "Home") j = 0;
+  else if (e.key === "End") j = tabs.length - 1;
+  if (j != null) { e.preventDefault(); setTab(tabs[j].dataset.tab, true); }
+});
+
+/* ---------- markdown ---------- */
+function md(src) {
+  const lines = String(src).replace(/\r/g, "").split("\n");
+  const inline = t => esc(t)
+    .replace(/`([^`]+)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a class="ext" href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/(^|[^*\w])\*([^*\s][^*]*?)\*(?!\w)/g, "$1<em>$2</em>");
+  let html = "", list = null, para = [], i = 0;
+  const flush = () => { if (para.length) { html += "<p>" + inline(para.join(" ")) + "</p>"; para = []; } };
+  const close = () => { if (list) { html += `</${list}>`; list = null; } };
+  while (i < lines.length) {
+    const l = lines[i];
+    if (/^\s*```/.test(l)) {
+      flush(); close(); const buf = []; i++;
+      while (i < lines.length && !/^\s*```/.test(lines[i])) buf.push(lines[i++]);
+      i++;
+      html += `<div class="code"><button type="button" class="btn sm copy" data-copy>Copy</button><pre><code>${esc(buf.join("\n"))}</code></pre></div>`;
+      continue;
+    }
+    const h = l.match(/^(#{1,6})\s+(.*)/);
+    if (h) { flush(); close(); const lv = Math.min(5, h[1].length + 2); html += `<h${lv}>${inline(h[2])}</h${lv}>`; i++; continue; }
+    if (/^\s*\|.*\|\s*$/.test(l)) {
+      flush(); close(); const rows = [];
+      while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+      const cells = r => r.trim().replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+      const body = rows.filter(r => !/^\s*\|[\s:|-]+\|\s*$/.test(r));
+      html += "<table>" + body.map((r, j) => "<tr>" + cells(r).map(c => j === 0 ? `<th>${inline(c)}</th>` : `<td>${inline(c)}</td>`).join("") + "</tr>").join("") + "</table>";
+      continue;
+    }
+    const ul = l.match(/^\s*[-*•]\s+(.*)/), ol = l.match(/^\s*\d+[.)]\s+(.*)/);
+    if (ul || ol) {
+      flush(); const t = ul ? "ul" : "ol";
+      if (list !== t) { close(); html += `<${t}>`; list = t; }
+      html += "<li>" + inline((ul || ol)[1]) + "</li>"; i++; continue;
+    }
+    if (/^\s*(---+|\*\*\*+)\s*$/.test(l)) { flush(); close(); i++; continue; }
+    if (!l.trim()) { flush(); close(); i++; continue; }
+    close(); para.push(l.trim()); i++;
+  }
+  flush(); close();
+  return html;
+}
+function copyCode(btn) {
+  const pre = btn.nextElementSibling; if (!pre) return;
+  copyText(pre.textContent).then(ok => {
+    if (!ok) { selectContents(pre); toast("Press Ctrl+C to copy the selected text."); return; }
+    btn.textContent = "Copied"; setTimeout(() => { btn.textContent = "Copy"; }, 1600);
+  });
+}
+
+/* ---------- limits ---------- */
+const DESC_MAX = 100000;
+
+/* ---------- Claude calls ---------- */
+function errCopy(e) {
+  switch (e?.code) {
+    case "access_denied": return "Enter a valid access code to run an analysis.";
+    case "rate_limited": return `You've reached the limit for now${e.retryAfter ? `. Try again in about ${Math.max(1, Math.ceil(e.retryAfter / 60))} minutes` : ". Try again a little later"}.`;
+    case "daily_cap": return "Today's capacity is used up. Please come back tomorrow.";
+    case "overloaded": return "Claude is very busy right now. Try again in a minute.";
+    case "too_large": return "The input is too large. Remove a big file or a few images and try again.";
+    case "bad_request": return "That request couldn't be processed. Check the input and try again.";
+    case "network": return "The connection dropped. Check your internet connection and try again.";
+    case "invalid_json": return "Claude's answer came back incomplete. Try again, or use Standard depth for a shorter answer.";
+    case "bad_shape": return "Claude's answer didn't include a process map. Try again with a bit more detail.";
+    case "refused": return "Claude declined this request. Rephrase it and try again.";
+    case "forbidden_origin": return "This site isn't allowed to use the analysis service.";
+    case "not_configured": return "The analysis service isn't set up yet. If you run this site, add your Claude API key as described in the README.";
+    case "cancelled": return "Stopped.";
+    default: return "Something went wrong on our side. Try again in a moment.";
+  }
+}
+const A_STAGES = ["Reading your input", "Mapping lanes", "Mapping steps", "Finding opportunities", "Writing questions"];
+const A_MARK = [null, '"lanes"', '"steps"', '"opportunities"', '"insights"'];
+const R_STAGES = ["Planning the research", "Searching the web", "Reading sources", "Mapping the process"];
+function showProgress(on, labels = A_STAGES) {
+  $("#progress").hidden = !on;
+  state.stageIdx = -1;
+  if (on) {
+    $("#stages").innerHTML = labels.map(s => `<li>${esc(s)}</li>`).join(""); $("#live").textContent = "";
+    setStage(0);
+    $("#progress").scrollIntoView({ block: "nearest", behavior: behavior() });
+  }
+}
+function setStage(i, label) {
+  $$("#stages li").forEach((li, k) => { li.className = k < i ? "done" : k === i ? "active" : ""; if (k === i && label) li.textContent = label; });
+  if (i !== state.stageIdx) { state.stageIdx = i; const li = $$("#stages li")[i]; if (li) srSay(li.textContent); }
+}
+const live = t => { $("#live").textContent = t; };
+function jsonCounts(text) {
+  const steps = (text.match(/"lane"\s*:/g) || []).length, opps = (text.match(/"hoursPerMonth"\s*:/g) || []).length;
+  return steps ? `${plural(steps, "step")}${opps ? ` · ${opps} ${opps === 1 ? "opportunity" : "opportunities"}` : ""}` : "";
+}
+function updateProgress(text) {
+  let at = 0;
+  A_MARK.forEach((m, i) => { if (m && text.includes(m)) at = i; });
+  setStage(at);
+  live(at >= 2 ? jsonCounts(text) : "");
+}
+function setBusy(b) {
+  state.busy = b;
+  const label = state.mode === "research" ? "Research and map" : "Map this process";
+  $("#btn-analyze").textContent = b ? "Working…" : label;
+  $("#btn-analyze").disabled = b || state.ai === false;
+  ["#btn-new", "#recent", "#btn-del", "#btn-refine", "#btn-answers"].forEach(s => { const el = $(s); if (el) el.disabled = b || ((s === "#btn-refine" || s === "#btn-answers") && state.ai === false); });
+}
+function setNote(text, kind = "") {
+  const n = $("#analyze-note");
+  n.className = "note" + (kind ? " " + kind : "");
+  n.textContent = text;
+}
+function readInput() {
+  return {
+    mode: state.mode, desc: $("#desc").value.trim(),
+    company: $("#r-company").value.trim(), process: $("#r-process").value.trim(), notes: $("#r-notes").value.trim(),
+    team: $("#ctx-team").value.trim(), volume: $("#ctx-volume").value.trim(),
+    tools: $("#ctx-tools").value.trim(), goal: $("#ctx-goal").value, depth: state.depth,
+    files: state.files.filter(f => f.status === "ready").map(f => ({ name: f.name, kind: f.kind, note: f.note, text: (f.text || "").slice(0, 30000) }))
+  };
+}
+const filesMeta = () => state.files.filter(f => f.status === "ready").map(f => ({ name: f.name, kind: f.kind, note: f.note }));
+// Images are shrunk in the browser before upload so requests stay small and fast.
+async function payloadImages() {
+  const out = [];
+  let total = 0;
+  for (const x of await collectImages()) {
+    try {
+      const data = await toJpegData(x.blob);
+      if (total + data.length > 3400000) { toast("Some images were left out to keep the upload small enough."); break; }
+      total += data.length;
+      out.push({ media_type: "image/jpeg", data, label: x.label });
+    } catch { toast(`${x.label} couldn't be prepared, so it was skipped.`); }
+  }
+  return out;
+}
+async function runDescribe(inp, signal) {
+  const images = await payloadImages();
+  const { value } = await callJson("analyze", { ...inp, images }, { signal, onText: ({ text }) => updateProgress(text) });
+  return normalize(value);
+}
+async function analyze() {
+  if (state.busy) return;
+  const inp = readInput();
+  const fail = (m, sel) => { setNote(m, "err"); if (sel) $(sel).focus(); };
+  if (state.ai === false) return fail(errCopy({ code: "not_configured" }));
+  if (!$("#code-fld").hidden && !$("#access-code").value.trim()) return fail(errCopy({ code: "access_denied" }), "#access-code");
+  if (state.files.some(f => f.status === "reading")) return fail("Wait for your files to finish reading.");
+  if (inp.mode === "research") {
+    if (!inp.company) return fail("Enter the company to research.", "#r-company");
+    if (!inp.process) return fail("Enter which process to research.", "#r-process");
+  } else if (inp.desc.length < 40 && !state.files.some(f => f.status === "ready")) {
+    return fail("Add a few sentences about who does what, in what order and with which tools, or attach a file.", "#desc");
+  }
+  setNote("Working…");
+  setBusy(true); showProgress(true, inp.mode === "research" ? R_STAGES : A_STAGES);
+  const ctl = state.ctl = new AbortController();
+  try {
+    const data = inp.mode === "research" ? await runResearch(inp, ctl.signal) : await runDescribe(inp, ctl.signal);
+    data.files = filesMeta();
+    const id = "m" + Date.now();
+    saveRecent({ id, name: data.process.name, at: Date.now(), input: inp, data });
+    setData(data, { input: inp, recentId: id });
+    collapseIntake(true); setTab("map");
+    setNote(data.research?.note || "Mapped. Use the box under the summary to correct anything.");
+    if (data.research?.note) toast("There's a note about this research in the Sources tab.", 5000);
+    $("#results").scrollIntoView({ block: "start", behavior: behavior() });
+    srSay(`Map ready: ${data.process.name}`);
+  } catch (e) {
+    setNote(errCopy(e), e?.code === "cancelled" ? "" : "err");
+    if (e?.code === "access_denied") { $("#code-fld").hidden = false; $("#access-code").focus(); }
+  } finally { setBusy(false); showProgress(false); }
+}
+async function refine(feedback) {
+  if (state.busy) return;
+  if (state.ai === false) return setRefineStatus(errCopy({ code: "not_configured" }), "err");
+  setBusy(true); showProgress(true, ["Applying your update", ...A_STAGES.slice(1)]);
+  const ctl = state.ctl = new AbortController();
+  try {
+    const prev = state.data;
+    const inp = state.input || { mode: "describe", desc: state.isExample ? EXAMPLE_TEXT : "", team: "", volume: "", tools: "", goal: $("#ctx-goal").value, depth: state.depth, files: [] };
+    const { value } = await callJson("refine", { data: prev, input: inp, feedback }, { signal: ctl.signal, onText: ({ text }) => updateProgress(text) });
+    const data = normalize(value, prev.sources, prev.research ? "inferred" : "stated");
+    if (prev.research) {
+      data.research = data.research || { ...prev.research };
+      ["mode", "company", "topic", "note", "read", "found"].forEach(k => data.research[k] = prev.research[k]);
+    }
+    data.files = prev.files;
+    const history = [...state.history, prev].slice(-10);
+    const id = state.recentId || "m" + Date.now();
+    saveRecent({ id, name: data.process.name, at: Date.now(), input: inp, data });
+    setData(data, { input: inp, recentId: id, keepHistory: true });
+    state.history = history;
+    setRefineStatus("Updated with: " + feedback.replace(/\s+/g, " ").slice(0, 120) + (feedback.length > 120 ? "…" : ""), "", true);
+    toast("Map updated.");
+    srSay("Map updated");
+  } catch (e) {
+    setRefineStatus(errCopy(e), e?.code === "cancelled" ? "" : "err");
+  } finally { setBusy(false); showProgress(false); }
+}
+function undo() {
+  const prev = state.history.pop(); if (!prev) return;
+  const history = state.history, id = state.recentId;
+  if (id) saveRecent({ id, name: prev.process.name, at: Date.now(), input: state.input, data: prev });
+  setData(prev, { input: state.input, recentId: id, keepHistory: true });
+  state.history = history;
+  setRefineStatus("Went back to the previous version.", "", history.length > 0);
+  srSay("Previous version restored");
+}
+async function runDive(id) {
+  const s = stepById(id); if (!s || state.ai === false) return;
+  state.dives[id]?.ctl?.abort();
+  const ent = state.dives[id] = { text: "", status: "running", ctl: new AbortController() };
+  if (state.selected === id) renderRail();
+  const paint = () => { if (state.selected === id) { const el = $("#dive-out"); if (el) el.innerHTML = diveHtml(ent); } };
+  try {
+    const r = await callApi("dive", { data: state.data, stepId: id }, { signal: ent.ctl.signal, onText: ({ text }) => { ent.text = text; paint(); } });
+    if (!r.text.trim()) throw { code: "upstream_error" };
+    ent.text = r.text; ent.truncated = r.truncated; ent.status = "done";
+    saveExtras();
+  } catch (e) {
+    ent.status = e?.code === "cancelled" ? "stopped" : "error";
+    ent.text = e?.code === "refused" ? "" : (e?.text || ent.text);
+    ent.err = e?.code === "cancelled" ? "" : errCopy(e);
+  }
+  if (state.dives[id] === ent && state.selected === id) renderRail();
+}
+async function runPlan(oid) {
+  const o = oppById(oid); if (!o || state.ai === false) return;
+  state.plans[oid]?.ctl?.abort();
+  const ent = state.plans[oid] = { text: "", status: "running", ctl: new AbortController() };
+  paintOppDyn(oid);
+  const paint = () => { const el = $("#plan-" + CSS.escape(oid)); if (el) el.innerHTML = diveHtml(ent); };
+  try {
+    const r = await callApi("plan", { data: state.data, oppId: oid }, { signal: ent.ctl.signal, onText: ({ text }) => { ent.text = text; paint(); } });
+    if (!r.text.trim()) throw { code: "upstream_error" };
+    ent.text = r.text; ent.truncated = r.truncated; ent.status = "done";
+    saveExtras();
+  } catch (e) {
+    ent.status = e?.code === "cancelled" ? "stopped" : "error";
+    ent.text = e?.code === "refused" ? "" : (e?.text || ent.text);
+    ent.err = e?.code === "cancelled" ? "" : errCopy(e);
+  }
+  if (state.plans[oid] === ent) paintOppDyn(oid);
+}
+
+/* ---------- attachments ---------- */
+const CDN = "https://cdnjs.cloudflare.com/ajax/libs/";
+const PDFJS = CDN + "pdf.js/3.11.174/pdf.min.js", PDFW = CDN + "pdf.js/3.11.174/pdf.worker.min.js", MAMMOTH = CDN + "mammoth/1.8.0/mammoth.browser.min.js";
+const TEXT_EXT = ["txt", "md", "csv", "tsv", "json", "html", "htm", "vtt", "srt", "eml", "bpmn", "drawio", "xml"];
+const IMG_EXT = ["png", "jpg", "jpeg", "webp", "gif"];
+const scripts = {};
+function loadScript(src) {
+  return scripts[src] || (scripts[src] = new Promise((res, rej) => {
+    const s = document.createElement("script"); s.src = src; s.async = true;
+    s.onload = res; s.onerror = () => { delete scripts[src]; s.remove(); rej({ code: "lib" }); };
+    document.head.append(s);
+  }));
+}
+const IMAGE_LIMITS = { maxCount: 6, maxInputBytes: 20e6, mediaTypes: ["image/png", "image/jpeg", "image/webp", "image/gif"] };
+const imageLimits = () => Promise.resolve(IMAGE_LIMITS);
+// Downscale to at most 1568px on the long side and re-encode as JPEG before upload.
+async function toJpegData(blob, max = 1568) {
+  const bmp = await createImageBitmap(blob);
+  const k = Math.min(1, max / Math.max(bmp.width, bmp.height));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(bmp.width * k)); c.height = Math.max(1, Math.round(bmp.height * k));
+  const ctx = c.getContext("2d"); ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, c.width, c.height);
+  ctx.drawImage(bmp, 0, 0, c.width, c.height); bmp.close?.();
+  const out = await new Promise(r => c.toBlob(r, "image/jpeg", 0.82));
+  if (!out) throw new Error("encode");
+  return new Promise((res, rej) => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(",")[1]); fr.onerror = rej; fr.readAsDataURL(out); });
+}
+const fmtBytes = b => b < 1e6 ? Math.max(1, Math.round(b / 1e3)) + " KB" : (b / 1e6).toFixed(1) + " MB";
+
+async function readPdf(f, item) {
+  await loadScript(PDFW); await loadScript(PDFJS);
+  const lib = window.pdfjsLib; lib.GlobalWorkerOptions.workerSrc = PDFW;
+  let doc;
+  try { doc = await lib.getDocument({ data: new Uint8Array(await f.arrayBuffer()), isEvalSupported: false }).promise; }
+  catch (e) { throw { code: e?.name === "PasswordException" ? "pdf_locked" : "pdf_bad" }; }
+  const n = Math.min(doc.numPages, 80);
+  let text = "";
+  for (let p = 1; p <= n; p++) {
+    const tc = await (await doc.getPage(p)).getTextContent();
+    text += `\n[Page ${p}]\n` + tc.items.map(i => (i.str || "") + (i.hasEOL ? "\n" : " ")).join("").replace(/[ \t]+/g, " ").trim();
+  }
+  const chars = text.replace(/\[Page \d+\]|\s/g, "").length;
+  if (chars >= 40 * n) {
+    item.text = text.trim();
+    item.note = `PDF · ${plural(doc.numPages, "page")}${doc.numPages > n ? ` (first ${n} read)` : ""} · ${fmtInt(chars)} characters`;
+    return;
+  }
+  // Little or no text layer: a scan. Send the first pages to Claude as images instead.
+  const lim = await imageLimits();
+  if (!lim) throw { code: "pdf_scanned_noimg" };
+  const max = Math.min(n, lim.maxCount || 5, 6);
+  for (let p = 1; p <= max; p++) {
+    const page = await doc.getPage(p), base = page.getViewport({ scale: 1 });
+    const vp = page.getViewport({ scale: Math.min(2.2, 1600 / base.width) });
+    const c = document.createElement("canvas"); c.width = Math.round(vp.width); c.height = Math.round(vp.height);
+    const ctx = c.getContext("2d"); ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, c.width, c.height);
+    await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    const blob = await new Promise(r => c.toBlob(r, "image/jpeg", 0.85));
+    if (blob) item.images.push({ blob, label: `${f.name}, page ${p}` });
+  }
+  item.text = "";
+  item.note = `Scanned PDF · ${plural(doc.numPages, "page")} · ${item.images.length} sent to Claude as images`;
+}
+async function readDocx(f, item) {
+  await loadScript(MAMMOTH);
+  let r;
+  try { r = await window.mammoth.extractRawText({ arrayBuffer: await f.arrayBuffer() }); } catch { throw { code: "docx_bad" }; }
+  item.text = String(r.value || "").replace(/\n{3,}/g, "\n\n").trim();
+  if (!item.text) throw { code: "docx_empty" };
+  item.note = `Word · ${plural(item.text.split(/\s+/).length, "word")}`;
+}
+async function readImage(f, item) {
+  const lim = await imageLimits();
+  if (!lim) throw { code: "img_unavailable" };
+  if (lim.mediaTypes?.length && f.type && !lim.mediaTypes.includes(f.type)) throw { code: "img_type" };
+  if (lim.maxInputBytes && f.size > lim.maxInputBytes) throw { code: "img_big" };
+  item.images = [{ blob: f, label: item.name }];
+  try { item.url = URL.createObjectURL(f); } catch {}
+  item.note = `Image · ${fmtBytes(f.size)} · Claude will read it`;
+}
+function fileErr(e) {
+  switch (e?.code) {
+    case "too_big": return "This file is over 25 MB. Add a smaller version.";
+    case "pdf_locked": return "This PDF is password-protected. Remove the password and add it again.";
+    case "pdf_bad": return "This PDF couldn't be opened. It may be damaged.";
+    case "pdf_scanned_noimg": return "This looks like a scanned PDF, and this view can't send images to Claude. Open the page in Claude, or paste the text.";
+    case "docx_bad": return "This Word file couldn't be opened. Save it again as .docx and retry.";
+    case "docx_empty": return "No text found in this Word file.";
+    case "img_unavailable": return "Images can be read only when this page is open in Claude.";
+    case "img_type": return "This image type isn't accepted. Use PNG, JPG or WebP.";
+    case "img_big": return "This image is too large. Use a smaller export or a screenshot.";
+    case "lib": return "The file reader didn't load. Check your connection and add the file again.";
+    case "doc_old": return "Old .doc files aren't supported. Save it as .docx or PDF.";
+    case "office": return "Not supported yet. Export it to PDF and add that.";
+    case "unknown_type": return "This file type isn't supported. Use PDF, Word, an image or a text file.";
+    default: return "This file couldn't be read.";
+  }
+}
+async function addFiles(list) {
+  for (const f of [...list]) {
+    const name = f.name || "pasted-image.png", ext = (name.split(".").pop() || "").toLowerCase();
+    const item = { id: "f" + Math.random().toString(36).slice(2, 9), name, kind: ext, status: "reading", text: "", images: [], note: "" };
+    state.files.push(item); renderFiles();
+    try {
+      if (f.size > 25e6) throw { code: "too_big" };
+      if (ext === "pdf" || f.type === "application/pdf") { item.kind = "pdf"; await readPdf(f, item); }
+      else if (ext === "docx") { item.kind = "docx"; await readDocx(f, item); }
+      else if (IMG_EXT.includes(ext) || /^image\//.test(f.type)) { item.kind = "image"; await readImage(f, item); }
+      else if (TEXT_EXT.includes(ext) || /^text\//.test(f.type)) { item.kind = "text"; item.text = (await f.text()).slice(0, 200000); item.note = `Text · ${fmtInt(item.text.length)} characters`; }
+      else if (ext === "doc") throw { code: "doc_old" };
+      else if (["pptx", "ppt", "xlsx", "xls", "vsdx"].includes(ext)) throw { code: "office" };
+      else throw { code: "unknown_type" };
+      item.status = "ready";
+    } catch (e) { item.status = "error"; item.note = fileErr(e); }
+    renderFiles();
+    srSay(`${item.name}: ${item.note}`);
+  }
+}
+function renderFiles() {
+  $("#flist").innerHTML = state.files.map(f => `<li class="fitem">
+    <span class="fthumb" aria-hidden="true">${f.url ? `<img src="${esc(f.url)}" alt="">` : esc((f.kind || "?").slice(0, 4).toUpperCase())}</span>
+    <div class="fmeta"><div class="fname" title="${esc(f.name)}">${esc(f.name)}</div><div class="fnote${f.status === "error" ? " err" : ""}">${f.status === "reading" ? "Reading…" : esc(f.note)}</div></div>
+    <button class="btn ghost sm" type="button" data-rm="${f.id}" aria-label="Remove ${esc(f.name)}">✕</button></li>`).join("");
+}
+$("#flist").addEventListener("click", e => {
+  const b = e.target.closest("[data-rm]"); if (!b) return;
+  const f = state.files.find(x => x.id === b.dataset.rm);
+  if (f?.url) URL.revokeObjectURL(f.url);
+  state.files = state.files.filter(x => x.id !== b.dataset.rm); renderFiles();
+  $("#file").focus();
+});
+async function collectImages() {
+  const all = state.files.filter(f => f.status === "ready").flatMap(f => f.images);
+  if (!all.length) return [];
+  const lim = await imageLimits();
+  if (!lim) return [];
+  const max = lim.maxCount || 5;
+  if (all.length > max) toast(`Only the first ${max} images are sent to Claude.`);
+  return all.slice(0, max);
+}
+
+/* ---------- web research ---------- */
+// The server runs Claude with its web search and page-reading tools and streams progress back.
+const canonical = u => {
+  try { const x = new URL(u); return (x.hostname.replace(/^www\./, "") + x.pathname.replace(/\/$/, "") + x.search).toLowerCase(); }
+  catch { return String(u).toLowerCase(); }
+};
+async function runResearch(inp, signal) {
+  const images = await payloadImages();
+  let searches = 0, reads = 0, writing = false;
+  setStage(0);
+  const { value, sources: seen } = await callJson("research", { ...inp, images }, {
+    signal,
+    onStatus: ev => {
+      if (writing) return;
+      if (ev.tool === "web_search") { searches++; setStage(1, `Searching the web (${searches})`); if (ev.query) live(`“${ev.query}”`); }
+      else if (ev.tool === "web_fetch") { reads++; setStage(2, `Reading sources (${reads})`); if (ev.url) live(domain(ev.url)); }
+    },
+    onText: ({ segment }) => {
+      if (!segment.includes("{")) return;
+      if (!writing) { writing = true; setStage(3); }
+      live(jsonCounts(segment));
+    }
+  });
+  // Keep only citations that point at pages the search or fetch tools really returned.
+  const seenMap = new Map(arr(seen).map(s => [canonical(s.url), s]));
+  const claimed = arr(value.sources);
+  const cited = claimed.filter(s => s && seenMap.has(canonical(s.url))).map((s, i) => {
+    const m = seenMap.get(canonical(s.url));
+    return { n: Math.round(num(s.n, i + 1)), title: str(s.title) || m.title, url: m.url, kind: m.kind === "page" ? "page" : "snippet" };
+  });
+  const mode = seenMap.size ? "web" : "knowledge";
+  const data = normalize(value, cited, "inferred");
+  data.research = data.research || { summary: "", confidence: "low", findings: [], gaps: [] };
+  const dropped = claimed.length - cited.length;
+  const note = mode === "knowledge" ? "No web results came back, so this map was built from Claude's general knowledge."
+    : dropped > 0 ? `${plural(dropped, "cited link")} couldn't be matched to a page Claude actually opened, so ${dropped === 1 ? "it was" : "they were"} left out.` : "";
+  Object.assign(data.research, { mode, company: inp.company, topic: inp.process, note, read: [...seenMap.values()].filter(s => s.kind === "page").length, found: seenMap.size });
+  return data;
+}
+
+/* ---------- saved maps ---------- */
+const RKEY = "pxray.recent";
+const getRecent = () => arr(store.get(RKEY, []));
+// Browser storage is small: if a write fails, drop attached file text, then older extras, then older maps.
+function writeRecent(list) {
+  if (store.set(RKEY, list)) return true;
+  list.forEach(x => { if (x.input?.files) x.input.files = x.input.files.map(f => ({ ...f, text: "" })); });
+  if (store.set(RKEY, list)) return true;
+  list.forEach((x, i) => { if (i > 0) delete x.extras; });
+  if (store.set(RKEY, list)) return true;
+  while (list.length > 1) { list.pop(); if (store.set(RKEY, list)) return true; }
+  toast("Your browser's storage is full, so this map couldn't be saved.", 5000);
+  return false;
+}
+function saveRecent(entry) {
+  const list = getRecent().filter(x => x.id !== entry.id);
+  list.unshift(entry);
+  writeRecent(list.slice(0, 12));
+  renderRecent(entry.id);
+}
+function saveExtras() {
+  if (!state.recentId) return;
+  const list = getRecent(), e = list.find(x => x.id === state.recentId); if (!e) return;
+  const done = m => Object.fromEntries(Object.entries(m).filter(([, v]) => v.status === "done" && v.text).map(([k, v]) => [k, v.text]));
+  e.extras = { dives: done(state.dives), plans: done(state.plans) };
+  writeRecent(list);
+}
+const asEntries = m => Object.fromEntries(Object.entries(m || {}).map(([k, t]) => [k, { text: String(t), status: "done" }]));
+function renderRecent(sel = state.recentId) {
+  const list = getRecent(), s = $("#recent");
+  s.innerHTML = `<option value="">${list.length ? `Saved maps (${list.length})` : "No saved maps yet"}</option><option value="__example">Example: vendor invoices</option>` +
+    list.map(x => `<option value="${esc(x.id)}">${esc(x.name)} · ${new Date(x.at).toLocaleDateString(undefined, { month: "short", day: "numeric" })}</option>`).join("");
+  s.value = sel && list.some(x => x.id === sel) ? sel : "";
+  $("#btn-del").hidden = !(state.recentId && list.some(x => x.id === state.recentId));
+}
+$("#recent").onchange = e => {
+  const v = e.target.value;
+  if (v === "__example") { setData(normalize(EXAMPLE), { example: true }); collapseIntake(false); }
+  else if (v) {
+    const x = getRecent().find(r => r.id === v);
+    if (!x) return;
+    try { setData(normalize(x.data), { input: x.input, recentId: x.id, dives: asEntries(x.extras?.dives), plans: asEntries(x.extras?.plans) }); }
+    catch { toast("That saved map couldn't be opened."); renderRecent(); return; }
+    fillInput(x.input); collapseIntake(true);
+  }
+  setTab("map");
+  $("#results").scrollIntoView({ block: "start", behavior: behavior() });
+};
+armable($("#btn-del"), "Delete map", () => {
+  const id = state.recentId; if (!id) return;
+  writeRecent(getRecent().filter(x => x.id !== id));
+  state.recentId = null; renderRecent();
+  toast("Deleted from this browser. The map stays on screen until you open another.");
+});
+armable($("#btn-clear"), "Clear saved maps", () => {
+  store.del(RKEY); state.recentId = null; renderRecent();
+  toast("Saved maps cleared from this browser.");
+});
+function fillInput(inp) {
+  if (!inp) return;
+  $("#desc").value = inp.desc || ""; $("#ctx-team").value = inp.team || ""; $("#ctx-volume").value = inp.volume || ""; $("#ctx-tools").value = inp.tools || "";
+  $("#r-company").value = inp.company || ""; $("#r-process").value = inp.process || ""; $("#r-notes").value = inp.notes || "";
+  if (inp.goal) $("#ctx-goal").value = inp.goal;
+  setDepth(inp.depth || "default"); setMode(inp.mode === "research" ? "research" : "describe"); updateCount();
+  state.files.forEach(f => f.url && URL.revokeObjectURL(f.url));
+  state.files = arr(inp.files).map(f => ({
+    id: "f" + Math.random().toString(36).slice(2, 9), name: f.name, kind: f.kind, images: [],
+    status: f.text ? "ready" : "error", text: f.text || "", note: f.text ? f.note : (f.kind === "image" || /scanned/i.test(f.note || "") ? "Images aren't kept between visits. Add it again to use it." : "This file's text wasn't kept. Add it again to use it.")
+  }));
+  renderFiles();
+}
+
+/* ---------- exports ---------- */
+function mermaid() {
+  const d = state.data, q = t => String(t).replace(/"/g, "'").replace(/[\[\]{}()<>|#;]/g, " ").replace(/\s+/g, " ").trim();
+  const nid = new Map(d.steps.map((s, i) => [s.id, "n" + (i + 1)]));
+  const shape = s => s.type === "decision" ? `{"${q(s.name)}"}` : (s.type === "start" || s.type === "end") ? `(["${q(s.name)}"])` : s.type === "automated" ? `[["${q(s.name)}"]]` : `["${q(s.name)}"]`;
+  let m = "flowchart LR\n";
+  d.lanes.forEach((l, li) => {
+    const steps = d.steps.filter(s => s.lane === l.id); if (!steps.length) return;
+    m += `  subgraph L${li + 1}["${q(l.name)}"]\n`;
+    steps.forEach(s => m += `    ${nid.get(s.id)}${shape(s)}\n`);
+    m += "  end\n";
+  });
+  d.steps.forEach(s => s.next.forEach(e => m += `  ${nid.get(s.id)} -->${e.label ? `|"${q(e.label)}"|` : ""} ${nid.get(e.to)}\n`));
+  const waste = d.steps.filter(s => s.value === "NVA").map(s => nid.get(s.id));
+  if (waste.length) m += `  classDef waste stroke:#B8362E,stroke-width:2px\n  class ${waste.join(",")} waste\n`;
+  return m;
+}
+function reportMd() {
+  const d = state.data, m = state.m, p = d.process;
+  const ln = id => laneById(id)?.name || "";
+  const cell = t => String(t ?? "").replace(/\|/g, "/").replace(/\n/g, " ");
+  let r = `# ${p.name}\n\n${p.summary}\n\n- **Trigger:** ${p.trigger || "Not stated"}\n- **Outcome:** ${p.outcome || "Not stated"}\n- **Owner:** ${p.owner || "Not stated"}\n- **Volume:** ${p.runsPerMonth ? fmtInt(p.runsPerMonth) + " runs/month (" + p.runsPerMonthBasis + ")" : "unknown"}\n\n`;
+  r += `## Key numbers (main path)\n\n| Steps | Handoffs | Rework loops | Hands-on | Elapsed | Flow efficiency | Team hours/month | Addressable (est.) |\n|---|---|---|---|---|---|---|---|\n| ${d.steps.length} | ${m.handoffs} | ${m.rework} | ${fmtMin(m.touch)} | ${fmtMin(m.elapsed)} | ${m.eff == null ? "–" : m.eff.toFixed(1) + "%"} | ${p.runsPerMonth ? fmtInt(m.hoursMonth) : "–"} | ${fmtInt(m.addressable)}h |\n\n`;
+  r += `## Process map\n\n\`\`\`mermaid\n${mermaid()}\`\`\`\n\n`;
+  r += `## Steps\n\n| # | Step | Lane | Type | Hands-on | Wait | Value | Automatable | Pain points |\n|---|---|---|---|---|---|---|---|---|\n`;
+  d.steps.forEach((s, i) => r += `| ${i + 1} | ${cell(s.name)}${s.basis !== "stated" ? ` (${BASIS_NAME[s.basis].toLowerCase()})` : ""}${s.sources.length ? ` [${s.sources.join(", ")}]` : ""} | ${cell(ln(s.lane))} | ${TYPE_NAME[s.type]} | ${fmtMin(s.touchMin)} | ${s.waitMin > 0 ? fmtMin(s.waitMin) : "–"} | ${s.value} | ${s.automation}% | ${cell(s.pains.join("; "))} |\n`);
+  if (d.insights.length) r += `\n## Diagnosis\n\n` + d.insights.map(x => `- **${x.kind}:** ${x.text}`).join("\n") + "\n\n";
+  r += `## Opportunities\n\n`;
+  d.opportunities.forEach((o, i) => {
+    r += `### ${i + 1}. ${o.title}\n\n*${o.category} · ${quadrant(o)[0]} · impact ${o.impact}/5 · effort ${o.effort}/5 · ~${fmtInt(o.hoursPerMonth)}h/month*\n\n${o.summary}\n\n- **How:** ${o.how}\n`;
+    if (o.tools.length) r += `- **Tools:** ${o.tools.join(", ")}\n`;
+    [["People still", o.humanInLoop], ["Cycle time", o.cycleTimeEffect], ["Risks", o.risks], ["Alternatives", o.alternatives], ["First step", o.firstStep]].forEach(([k, v]) => { if (v) r += `- **${k}:** ${v}\n`; });
+    if (o.steps.length) r += `- **Steps:** ${o.steps.map(id => stepById(id)?.name).join(", ")}\n`;
+    if (state.plans[o.id]?.text) r += `\n#### Implementation plan\n\n${state.plans[o.id].text}\n`;
+    r += "\n";
+  });
+  Object.entries(state.dives).forEach(([id, x]) => { if (x.text && stepById(id)) r += `## Deep dive: ${stepById(id).name}\n\n${x.text}\n\n`; });
+  if (d.research) {
+    const R = d.research;
+    r += `## Research\n\n*${R.mode === "web" ? `Live web research: ${plural(R.read, "page")} read, ${plural(R.found, "result")} scanned` : "Built from Claude's general knowledge without live web search"}. Confidence: ${R.confidence}.*\n\n${R.note ? `> ${R.note}\n\n` : ""}${R.summary ? R.summary + "\n\n" : ""}`;
+    if (R.findings.length) r += R.findings.map(f => `- ${f.text}${f.sources.length ? ` [${f.sources.join(", ")}]` : ""}`).join("\n") + "\n\n";
+    if (R.gaps.length) r += `**Not found publicly:**\n\n` + R.gaps.map(g => `- ${g}`).join("\n") + "\n\n";
+  }
+  if (d.sources.length) r += `## Sources\n\n` + d.sources.map(s => `${s.n}. [${s.title}](${s.url})${s.kind === "snippet" ? " (search snippet)" : ""}`).join("\n") + "\n\n";
+  if (d.files.length) r += `## Files used\n\n` + d.files.map(f => `- ${f.name}${f.note ? ` (${f.note})` : ""}`).join("\n") + "\n\n";
+  if (d.assumptions.length) r += `## Assumptions\n\n` + d.assumptions.map(a => `- ${a}`).join("\n") + "\n\n";
+  if (d.questions.length) r += `## Open questions\n\n` + d.questions.map(a => `- ${a}`).join("\n") + "\n";
+  return r;
+}
+const slug = () => state.data.process.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "process";
+function save(filename, data, type) {
+  const url = URL.createObjectURL(new Blob([data], { type }));
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  toast("Downloaded " + filename);
+}
+$("#x-md").onclick = () => save(slug() + "-process-map.md", reportMd(), "text/markdown;charset=utf-8");
+$("#x-json").onclick = () => save(slug() + "-process-map.json", JSON.stringify(state.data, null, 2), "application/json");
+let lastFocus = null;
+function openOverlay(text) {
+  lastFocus = document.activeElement;
+  $("#ov-text").value = text; $("#overlay").hidden = false;
+  $("#ov-text").focus(); $("#ov-text").select();
+}
+function closeOverlay() { $("#overlay").hidden = true; lastFocus?.focus?.(); }
+$("#x-mermaid").onclick = () => {
+  const m = mermaid();
+  copyText(m).then(ok => ok ? toast("Mermaid copied. Paste it into any Mermaid editor.") : openOverlay(m));
+};
+$("#ov-close").onclick = closeOverlay;
+$("#overlay").onclick = e => { if (e.target.id === "overlay") closeOverlay(); };
+$("#overlay").addEventListener("keydown", e => {
+  if (e.key !== "Tab") return;
+  const f = [$("#ov-text"), $("#ov-close")], i = f.indexOf(document.activeElement);
+  e.preventDefault(); f[(i + (e.shiftKey ? f.length - 1 : 1)) % f.length].focus();
+});
+
+/* ---------- intake ---------- */
+const OUTLINE = `Process name:
+Who is involved (roles, teams, systems, outside parties):
+What starts it:
+Steps as they happen today (who does what, in order):
+1.
+2.
+3.
+Decisions or exceptions (what happens when something is wrong or missing):
+Tools and systems used:
+How often it runs / volume:
+How long it takes end to end:
+What's painful or slow:
+`;
+const DESCRIBE_NOTE = "A typical analysis takes 30 to 90 seconds.";
+const RESEARCH_NOTE = "Research usually takes 2 to 4 minutes while Claude searches and reads the web.";
+function updateCount() {
+  const n = $("#desc").value.length, c = $("#charcount");
+  c.textContent = !n ? "" : n > DESC_MAX ? `${fmtInt(n)} characters · only the first ${fmtInt(DESC_MAX)} are used` : `${fmtInt(n)} characters`;
+  c.classList.toggle("warn", n > DESC_MAX);
+}
+function saveDraft() {
+  session.set("pxray.draft", JSON.stringify({ desc: $("#desc").value, company: $("#r-company").value, process: $("#r-process").value, notes: $("#r-notes").value, mode: state.mode }));
+}
+["#desc", "#r-company", "#r-process", "#r-notes"].forEach(s => $(s).addEventListener("input", () => { if (s === "#desc") updateCount(); saveDraft(); }));
+$("#btn-outline").onclick = () => { const t = $("#desc"); t.value = (t.value.trim() ? t.value.trim() + "\n\n" : "") + OUTLINE; updateCount(); saveDraft(); t.focus(); };
+$("#btn-example-text").onclick = () => {
+  $("#desc").value = EXAMPLE_TEXT; $("#ctx-team").value = "Finance ops, 400-person distributor"; $("#ctx-volume").value = "1,200 invoices a month"; $("#ctx-tools").value = "NetSuite, Outlook, Google Drive, Excel";
+  updateCount(); saveDraft(); $("#btn-analyze").focus();
+};
+$("#file").onchange = e => { addFiles(e.target.files); e.target.value = ""; };
+const draggingFiles = e => [...(e.dataTransfer?.types || [])].includes("Files");
+$("#intake").addEventListener("dragover", e => { if (draggingFiles(e)) { e.preventDefault(); $("#drop").classList.add("over"); } });
+$("#intake").addEventListener("dragleave", e => { if (!e.relatedTarget || !$("#intake").contains(e.relatedTarget)) $("#drop").classList.remove("over"); });
+$("#intake").addEventListener("drop", e => { $("#drop").classList.remove("over"); if (e.dataTransfer?.files?.length) { e.preventDefault(); collapseIntake(false); addFiles(e.dataTransfer.files); } });
+$("#intake").addEventListener("paste", e => { const fs = [...(e.clipboardData?.files || [])]; if (fs.length) { e.preventDefault(); addFiles(fs); } });
+$("#intake").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); analyze(); } });
+function setMode(v) {
+  state.mode = v;
+  $$("#mode button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === v)));
+  $("#pane-describe").hidden = v !== "describe";
+  $("#pane-research").hidden = v !== "research";
+  $("#ctx-describe").hidden = v === "research";
+  if (!$("#intake").classList.contains("collapsed")) $("#intake-title").textContent = v === "research" ? "Research a company's process" : "Describe the process";
+  if (!state.busy) $("#btn-analyze").textContent = v === "research" ? "Research and map" : "Map this process";
+  if (state.ai === false) setNote(errCopy({ code: "not_configured" }));
+  else if (!state.busy) setNote(v === "research" ? RESEARCH_NOTE : DESCRIBE_NOTE);
+  saveDraft();
+}
+$$("#mode button").forEach(b => b.onclick = () => { setMode(b.dataset.v); $(b.dataset.v === "research" ? "#r-company" : "#desc").focus(); });
+function setDepth(v) { state.depth = v; $$("#depth button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.v === v))); }
+$$("#depth button").forEach(b => b.onclick = () => setDepth(b.dataset.v));
+$("#btn-analyze").onclick = analyze;
+$("#btn-stop").onclick = () => state.ctl?.abort();
+function intakeSummary() {
+  const i = state.input; if (!i) return "";
+  const n = (i.files || []).length;
+  const parts = [i.mode === "research" ? `Researched ${i.company} · ${i.process}` : (i.desc ? `Described in ${fmtInt(i.desc.length)} characters` : "Built from attached files")];
+  if (n) parts.push(plural(n, "file"));
+  return parts.join(" · ");
+}
+function collapseIntake(c) {
+  $("#intake").classList.toggle("collapsed", c);
+  $("#intake-title").textContent = c ? "Your input" : (state.mode === "research" ? "Research a company's process" : "Describe the process");
+  $("#intake-sum").textContent = c ? intakeSummary() : "";
+}
+$("#btn-expand").onclick = () => { collapseIntake(false); $(state.mode === "research" ? "#r-company" : "#desc").focus(); };
+$("#btn-start-own").onclick = () => { collapseIntake(false); $("#intake").scrollIntoView({ block: "start", behavior: behavior() }); $(state.mode === "research" ? "#r-company" : "#desc").focus({ preventScroll: true }); };
+$("#btn-new").onclick = () => {
+  collapseIntake(false);
+  ["#desc", "#ctx-team", "#ctx-volume", "#ctx-tools", "#r-company", "#r-process", "#r-notes"].forEach(s => $(s).value = "");
+  state.files.forEach(f => f.url && URL.revokeObjectURL(f.url));
+  state.files = []; renderFiles();
+  updateCount(); setMode(state.mode);
+  $("#intake").scrollIntoView({ block: "start", behavior: behavior() });
+  $(state.mode === "research" ? "#r-company" : "#desc").focus({ preventScroll: true });
+};
+
+/* ---------- page-wide interactions ---------- */
+document.addEventListener("click", e => {
+  if (e.target.closest("a[href]")) return;
+  const t = e.target.closest("[data-copy],[data-undo],[data-opp],[data-show],[data-plan],[data-planstop],[data-dive],[data-divestop],[data-clear-hl],[data-close-rail],[data-oppfilter],[data-example],[data-goto]");
+  if (!t || t.disabled) return;
+  const d = t.dataset;
+  if ("copy" in d) return copyCode(t);
+  if ("undo" in d) return undo();
+  if (d.opp) return gotoOpp(d.opp);
+  if (d.show) return showOnMap(d.show);
+  if (d.plan) return runPlan(d.plan);
+  if (d.planstop) return state.plans[d.planstop]?.ctl?.abort();
+  if (d.dive) return runDive(d.dive);
+  if (d.divestop) return state.dives[d.divestop]?.ctl?.abort();
+  if ("clearHl" in d) return clearHighlight();
+  if ("closeRail" in d) return closeRail();
+  if (d.oppfilter) { state.oppFilter = d.oppfilter; return renderOpps(); }
+  if ("example" in d) {
+    $("#r-company").value = d.co; $("#r-process").value = d.pr; saveDraft();
+    return $("#btn-analyze").focus();
+  }
+  if (d.goto) return selectStep(d.goto);
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    if (!$("#overlay").hidden) return closeOverlay();
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (state.selected) return closeRail();
+    if (state.highlight) return clearHighlight();
+    return;
+  }
+  if ((e.key === "Enter" || e.key === " ") && e.target instanceof Element && !/^(BUTTON|A|INPUT|TEXTAREA|SELECT|SUMMARY)$/.test(e.target.tagName) && e.target.matches("[data-goto],[data-opp],[data-step]")) {
+    e.preventDefault();
+    e.target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+  }
+});
+
+/* ---------- map interactions ---------- */
+const stage = $("#stage");
+let drag = null, justPanned = false;
+stage.addEventListener("click", e => {
+  if (justPanned) return;
+  const g = e.target.closest("[data-step]");
+  if (g) selectStep(g.dataset.step);
+});
+stage.addEventListener("pointerdown", e => {
+  // A press on the stage itself (its scrollbars or empty space) keeps native behavior.
+  if (e.pointerType !== "mouse" || e.button !== 0 || e.target === stage) return;
+  drag = { x: e.clientX, y: e.clientY, sl: stage.scrollLeft, st: stage.scrollTop, moved: false };
+});
+addEventListener("pointermove", e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (!drag.moved && Math.hypot(dx, dy) < 5) return;
+  drag.moved = true; stage.classList.add("panning");
+  stage.scrollLeft = drag.sl - dx; stage.scrollTop = drag.st - dy;
+});
+addEventListener("pointerup", () => {
+  if (drag?.moved) { justPanned = true; setTimeout(() => { justPanned = false; }, 0); }
+  drag = null; stage.classList.remove("panning");
+});
+stage.addEventListener("wheel", e => {
+  if (!(e.ctrlKey || e.metaKey)) return;
+  e.preventDefault();
+  setZoom(state.zoom * (e.deltaY < 0 ? 1.1 : 1 / 1.1));
+}, { passive: false });
+$$("#colorby button").forEach(b => b.onclick = () => {
+  state.colorBy = b.dataset.v;
+  $$("#colorby button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  const st = stage, sl = st.scrollLeft, sc = st.scrollTop;
+  renderMap(); st.scrollLeft = sl; st.scrollTop = sc;
+});
+$("#z-in").onclick = () => setZoom(state.zoom * 1.15);
+$("#z-out").onclick = () => setZoom(state.zoom / 1.15);
+$("#z-val").onclick = () => setZoom(1);
+$("#z-fit").onclick = fitZoom;
+
+/* ---------- boot ---------- */
+(function boot() {
+  document.documentElement.lang = "en";
+  if (/Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent)) $("#kbd-mod").textContent = "⌘";
+  let draft = {};
+  const raw = session.get("pxray.draft");
+  if (raw) { try { draft = JSON.parse(raw); } catch { draft = { desc: raw }; } }
+  $("#desc").value = draft.desc || ""; $("#r-company").value = draft.company || ""; $("#r-process").value = draft.process || ""; $("#r-notes").value = draft.notes || "";
+  updateCount(); renderFiles();
+  if (matchMedia("(max-width:620px)").matches) state.zoom = 0.7;
+  setData(normalize(EXAMPLE), { example: true });
+  setMode(draft.mode === "research" ? "research" : "describe");
+  const h = location.hash.replace("#", "");
+  const tab = $(`.tab[data-tab="${CSS.escape(h)}"]`);
+  if (tab && !tab.hidden) setTab(h);
+  $("#access-code").value = store.get("pxray.code", "");
+  $("#access-code").addEventListener("input", e => store.set("pxray.code", e.target.value.trim()));
+  healthPromise.then(h => {
+    if (!h) return;
+    state.ai = !!h.configured;
+    $("#code-fld").hidden = !h.accessCodeRequired;
+    if (!h.configured) { setNote(errCopy({ code: "not_configured" })); setBusy(false); renderAll(); }
+  });
+})();
+</script>
+</body>
+</html>
